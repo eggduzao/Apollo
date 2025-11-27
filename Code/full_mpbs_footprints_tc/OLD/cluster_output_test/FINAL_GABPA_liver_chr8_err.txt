@@ -1,4 +1,0 @@
-Traceback (most recent call last):
-  File "/work/eg474423/eg474423_Projects/trunk/Dream/exp/full_mpbs_footprints_tc/fullMpbsFast.py", line 124, in <module>
-    if(score > maxValue):
-KeyboardInterrupt

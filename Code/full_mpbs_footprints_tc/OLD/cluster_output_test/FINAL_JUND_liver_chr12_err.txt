@@ -1,6 +1,0 @@
-Traceback (most recent call last):
-  File "/work/eg474423/eg474423_Projects/trunk/Dream/exp/full_mpbs_footprints_tc/fullMpbsFast.py", line 120, in <module>
-    for res in search(sequence, [e.pssm_list for e in motifList], [e.min for e in motifList], absolute_threshold=True, both_strands=True):
-  File "/home/eg474423/Installation/MOODS-1.0.1/lib/python2.7/site-packages/MOODS/__init__.py", line 113, in search
-    return _cmodule._search(str(sequence), matrices, thresholds, bg, algorithm, q, absolute_threshold, combine, both_strands)
-KeyboardInterrupt
