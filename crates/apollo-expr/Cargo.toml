@@ -1,0 +1,165 @@
+[package]
+name = "apollo-expr"
+version.workspace = true
+authors.workspace = true
+edition.workspace = true
+homepage.workspace = true
+license.workspace = true
+repository.workspace = true
+description = "Physical expression implementation of the Apollo project."
+
+[build-dependencies]
+version_check = { workspace = true }
+
+[dependencies]
+arrow = { workspace = true }
+bitflags = { workspace = true }
+chrono-tz = { workspace = true, optional = true }
+hashbrown = { workspace = true }
+libloading = { workspace = true, optional = true }
+num-traits = { workspace = true }
+apollo-buffer = { workspace = true }
+apollo-compute = { workspace = true }
+apollo-core = { workspace = true, features = ["lazy", "zip_with", "random"] }
+apollo-io = { workspace = true, features = ["lazy"] }
+apollo-json = { workspace = true, optional = true }
+apollo-ops = { workspace = true, features = ["chunked_ids"] }
+apollo-plan = { workspace = true }
+apollo-row = { workspace = true }
+apollo-time = { workspace = true, optional = true }
+apollo-utils = { workspace = true }
+rand = { workspace = true }
+rayon = { workspace = true }
+recursive = { workspace = true }
+regex = { workspace = true, optional = true }
+
+[features]
+nightly = ["apollo-core/nightly", "apollo-plan/nightly"]
+parquet = ["apollo-io/parquet", "apollo-plan/parquet"]
+temporal = [
+  "dtype-datetime",
+  "dtype-date",
+  "dtype-time",
+  "dtype-i8",
+  "dtype-i16",
+  "dtype-duration",
+  "apollo-plan/temporal",
+]
+
+dtype-full = [
+  "dtype-array",
+  "dtype-categorical",
+  "dtype-date",
+  "dtype-datetime",
+  "dtype-decimal",
+  "dtype-duration",
+  "dtype-extension",
+  "dtype-i16",
+  "dtype-i128",
+  "dtype-i8",
+  "dtype-struct",
+  "dtype-time",
+  "dtype-u16",
+  "dtype-u128",
+  "dtype-u8",
+  "dtype-f16",
+  "object",
+]
+object = ["apollo-plan/object", "apollo-ops/object"]
+dtype-array = ["apollo-plan/dtype-array", "apollo-ops/dtype-array"]
+dtype-categorical = ["apollo-plan/dtype-categorical"]
+dtype-date = ["apollo-plan/dtype-date", "apollo-time/dtype-date", "temporal"]
+dtype-datetime = ["apollo-plan/dtype-datetime", "apollo-time/dtype-datetime", "temporal"]
+dtype-decimal = ["apollo-plan/dtype-decimal", "dtype-i128"]
+dtype-duration = ["apollo-plan/dtype-duration", "apollo-time/dtype-duration", "temporal"]
+dtype-extension = ["apollo-plan/dtype-extension", "apollo-ops/dtype-extension"]
+dtype-i16 = ["apollo-plan/dtype-i16"]
+dtype-i8 = ["apollo-plan/dtype-i8"]
+dtype-i128 = ["apollo-plan/dtype-i128"]
+dtype-struct = ["apollo-plan/dtype-struct", "apollo-ops/dtype-struct"]
+dtype-time = ["apollo-plan/dtype-time", "apollo-time/dtype-time", "temporal"]
+dtype-u128 = ["apollo-plan/dtype-u128"]
+dtype-u16 = ["apollo-plan/dtype-u16"]
+dtype-u8 = ["apollo-plan/dtype-u8"]
+dtype-f16 = ["apollo-plan/dtype-f16"]
+
+# operations
+approx_unique = ["apollo-plan/approx_unique"]
+is_in = ["apollo-plan/is_in", "apollo-ops/is_in"]
+is_first_distinct = ["apollo-plan/is_first_distinct"]
+is_last_distinct = ["apollo-plan/is_last_distinct"]
+is_between = ["apollo-plan/is_between"]
+is_close = ["apollo-plan/is_close"]
+is_unique = ["apollo-plan/is_unique"]
+strings = ["apollo-plan/strings"]
+business = ["apollo-plan/business"]
+range = ["apollo-plan/range"]
+abs = ["apollo-plan/abs"]
+diff = ["apollo-plan/diff"]
+pct_change = ["apollo-plan/pct_change"]
+interpolate = ["apollo-plan/interpolate"]
+interpolate_by = ["apollo-plan/interpolate_by"]
+timezones = ["regex", "apollo-plan/timezones"]
+unique_counts = ["apollo-plan/unique_counts"]
+repeat_by = ["apollo-plan/repeat_by"]
+mode = ["apollo-plan/mode"]
+moment = ["apollo-plan/moment"]
+rank = ["apollo-plan/rank"]
+replace = ["apollo-plan/replace"]
+reinterpret = ["apollo-plan/reinterpret"]
+row_hash = ["apollo-plan/row_hash"]
+arg_where = ["apollo-plan/arg_where"]
+index_of = ["apollo-plan/index_of"]
+search_sorted = ["apollo-plan/search_sorted"]
+trigonometry = ["apollo-plan/trigonometry"]
+sign = ["apollo-plan/sign"]
+rolling_window = ["apollo-plan/rolling_window", "apollo-time/rolling_window"]
+rolling_window_by = ["apollo-plan/rolling_window_by", "apollo-time/rolling_window_by"]
+top_k = ["apollo-plan/top_k"]
+cum_agg = ["apollo-plan/cum_agg"]
+log = ["apollo-plan/log"]
+fused = ["apollo-plan/fused"]
+ffi_plugin = ["apollo-plan/ffi_plugin", "libloading"]
+regex = ["apollo-plan/regex", "dep:regex"]
+extract_groups = ["regex", "apollo-plan/extract_groups"]
+find_many = ["apollo-ops/find_many", "apollo-plan/find_many"]
+json = ["apollo-plan/json", "apollo-json"]
+extract_jsonpath = ["apollo-plan/extract_jsonpath", "apollo-ops/extract_jsonpath"]
+ewma = ["apollo-plan/ewma"]
+ewma_by = ["apollo-plan/ewma_by"]
+string_pad = ["apollo-plan/string_pad"]
+string_normalize = ["apollo-plan/string_normalize"]
+string_reverse = ["apollo-plan/string_reverse"]
+string_to_integer = ["apollo-plan/string_to_integer"]
+list_sets = ["apollo-plan/list_sets", "apollo-ops/list_sets"]
+list_any_all = ["apollo-ops/list_any_all", "apollo-plan/list_any_all"]
+array_any_all = ["apollo-ops/array_any_all", "apollo-plan/array_any_all", "dtype-array"]
+list_drop_nulls = ["apollo-ops/list_drop_nulls", "apollo-plan/list_drop_nulls"]
+list_sample = ["apollo-ops/list_sample", "apollo-plan/list_sample"]
+list_filter = ["apollo-ops/list_filter", "apollo-plan/list_filter"]
+list_gather = ["apollo-ops/list_gather", "apollo-plan/list_gather"]
+list_count = ["apollo-ops/list_count", "apollo-plan/list_count"]
+array_count = ["apollo-ops/array_count", "apollo-plan/array_count", "dtype-array"]
+array_to_struct = ["apollo-plan/array_to_struct"]
+concat_str = ["apollo-plan/concat_str"]
+list_to_struct = ["apollo-plan/list_to_struct"]
+random = ["apollo-plan/random"]
+cutqcut = ["apollo-plan/cutqcut", "apollo-ops/cutqcut"]
+rle = ["apollo-plan/rle", "apollo-ops/rle"]
+peaks = ["apollo-plan/peaks"]
+cov = ["apollo-ops/cov", "apollo-plan/cov"]
+hist = ["apollo-plan/hist"]
+binary_encoding = ["apollo-plan/binary_encoding"]
+string_encoding = ["apollo-plan/string_encoding"]
+month_start = ["apollo-plan/month_start"]
+month_end = ["apollo-plan/month_end"]
+offset_by = ["apollo-plan/offset_by"]
+
+bitwise = ["apollo-core/bitwise", "apollo-plan/bitwise"]
+round_series = ["apollo-plan/round_series", "apollo-ops/round_series"]
+dynamic_group_by = ["apollo-plan/dynamic_group_by", "apollo-time", "temporal", "chrono-tz"]
+propagate_nans = ["apollo-plan/propagate_nans", "apollo-ops/propagate_nans"]
+allow_unused = []
+
+[lints]
+workspace = true

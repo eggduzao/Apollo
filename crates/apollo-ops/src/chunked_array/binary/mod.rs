@@ -1,0 +1,15 @@
+mod namespace;
+mod slice;
+
+pub use namespace::*;
+use apollo_core::prelude::*;
+
+pub trait AsBinary {
+    fn as_binary(&self) -> &BinaryChunked;
+}
+
+impl AsBinary for BinaryChunked {
+    fn as_binary(&self) -> &BinaryChunked {
+        self
+    }
+}

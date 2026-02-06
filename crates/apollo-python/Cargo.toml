@@ -1,0 +1,321 @@
+[package]
+name = "apollo-python"
+version = { workspace = true }
+authors = { workspace = true }
+edition = { workspace = true }
+homepage = { workspace = true }
+license = { workspace = true }
+repository = { workspace = true }
+description = "Enable running Apollo workloads in Python"
+
+[dependencies]
+apollo-buffer = { workspace = true }
+apollo-compute = { workspace = true }
+apollo-core = { workspace = true, features = ["python"] }
+apollo-dtype = { workspace = true }
+apollo-error = { workspace = true }
+apollo-expr = { workspace = true }
+apollo-ffi = { workspace = true }
+apollo-io = { workspace = true }
+apollo-lazy = { workspace = true, features = ["python"] }
+apollo-mem-engine = { workspace = true, features = ["python"] }
+apollo-ops = { workspace = true, features = ["bitwise"] }
+apollo-parquet = { workspace = true, optional = true }
+apollo-plan = { workspace = true }
+apollo-row = { workspace = true }
+apollo-testing = { workspace = true }
+apollo-time = { workspace = true }
+apollo-utils = { workspace = true, features = ["python"] }
+
+arboard = { workspace = true, optional = true }
+arrow = { workspace = true }
+bincode = { workspace = true }
+bytemuck = { workspace = true }
+bytes = { workspace = true }
+chrono = { workspace = true }
+chrono-tz = { workspace = true }
+either = { workspace = true }
+flate2 = { workspace = true }
+hashbrown = { workspace = true }
+itoa = { workspace = true }
+libc = { workspace = true }
+ndarray = { workspace = true }
+num-traits = { workspace = true }
+numpy = { workspace = true }
+parking_lot = { workspace = true }
+pyo3 = { workspace = true, features = ["abi3-py310", "chrono", "chrono-tz", "multiple-pymethods"] }
+rayon = { workspace = true }
+recursive = { workspace = true }
+serde_json = { workspace = true, optional = true }
+
+[target.'cfg(any(not(target_family = "unix"), target_os = "emscripten"))'.dependencies]
+mimalloc = { version = "0.1", default-features = false }
+
+# Feature background_threads is unsupported on MacOS (https://github.com/jemalloc/jemalloc/issues/843).
+[target.'cfg(all(target_family = "unix", not(target_os = "macos"), not(target_os = "emscripten")))'.dependencies]
+tikv-jemallocator = { version = "0.6.0", features = ["disable_initial_exec_tls", "background_threads"] }
+
+[target.'cfg(all(target_family = "unix", target_os = "macos"))'.dependencies]
+tikv-jemallocator = { version = "0.6.0", features = ["disable_initial_exec_tls"] }
+
+[dependencies.apollo]
+workspace = true
+features = [
+  "abs",
+  "approx_unique",
+  "array_any_all",
+  "arg_where",
+  "bitwise",
+  "business",
+  "concat_str",
+  "cum_agg",
+  "cumulative_eval",
+  "dataframe_arithmetic",
+  "month_start",
+  "month_end",
+  "offset_by",
+  "diagonal_concat",
+  "diff",
+  "dot_diagram",
+  "dot_product",
+  "dtype-categorical",
+  "dtype-extension",
+  "dtype-full",
+  "dynamic_group_by",
+  "ewma",
+  "ewma_by",
+  "fmt",
+  "fused",
+  "interpolate",
+  "interpolate_by",
+  "is_first_distinct",
+  "is_last_distinct",
+  "is_unique",
+  "is_between",
+  "is_close",
+  "lazy",
+  "list_eval",
+  "list_to_struct",
+  "list_arithmetic",
+  "array_arithmetic",
+  "array_to_struct",
+  "log",
+  "mode",
+  "moment",
+  "ndarray",
+  "partition_by",
+  "product",
+  "random",
+  "range",
+  "rank",
+  "reinterpret",
+  "replace",
+  "rolling_window",
+  "rolling_window_by",
+  "round_series",
+  "row_hash",
+  "rows",
+  "semi_anti_join",
+  "serde-lazy",
+  "string_encoding",
+  "string_normalize",
+  "string_reverse",
+  "string_to_integer",
+  "string_pad",
+  "strings",
+  "temporal",
+  "to_dummies",
+  "true_div",
+  "unique_counts",
+  "zip_with",
+  "cov",
+]
+
+[build-dependencies]
+version_check = { workspace = true }
+
+[features]
+allocator = []
+c_api = []
+
+# Features below are only there to enable building a slim binary during development.
+avro = ["apollo/avro"]
+async = ["apollo-lazy/async", "apollo-io/async"]
+catalog = ["apollo-lazy/catalog"]
+parquet = ["apollo/parquet", "apollo-parquet", "apollo-mem-engine/parquet"]
+ipc = ["apollo/ipc", "apollo-mem-engine/ipc"]
+ipc_streaming = ["apollo/ipc_streaming"]
+is_in = ["apollo/is_in"]
+json = [
+  "apollo/serde",
+  "apollo-buffer/serde",
+  "serde_json",
+  "apollo/json",
+  "apollo-utils/serde",
+  "apollo-mem-engine/json",
+]
+scan_lines = ["apollo/scan_lines", "apollo-mem-engine/scan_lines"]
+trigonometry = ["apollo/trigonometry"]
+sign = ["apollo/sign"]
+asof_join = ["apollo/asof_join"]
+iejoin = ["apollo/iejoin"]
+cross_join = ["apollo/cross_join"]
+pct_change = ["apollo/pct_change"]
+repeat_by = ["apollo/repeat_by"]
+
+meta = ["apollo/meta"]
+index_of = ["apollo/index_of"]
+search_sorted = ["apollo/search_sorted"]
+decompress = ["apollo/decompress"]
+regex = ["apollo/regex"]
+csv = ["apollo/csv", "apollo-mem-engine/csv"]
+clipboard = ["arboard"]
+extract_jsonpath = ["apollo/extract_jsonpath"]
+pivot = ["apollo/pivot"]
+top_k = ["apollo/top_k"]
+propagate_nans = ["apollo/propagate_nans"]
+sql = ["apollo/sql"]
+performant = ["apollo/performant"]
+timezones = ["apollo/timezones"]
+cse = ["apollo/cse"]
+merge_sorted = ["apollo/merge_sorted"]
+list_filter = ["apollo/list_filter"]
+list_gather = ["apollo/list_gather"]
+list_count = ["apollo/list_count"]
+array_count = ["apollo/array_count", "apollo/dtype-array"]
+binary_encoding = ["apollo/binary_encoding"]
+list_sets = ["apollo-lazy/list_sets"]
+list_any_all = ["apollo/list_any_all"]
+array_any_all = ["apollo/array_any_all", "apollo/dtype-array"]
+list_drop_nulls = ["apollo/list_drop_nulls"]
+list_sample = ["apollo/list_sample"]
+cutqcut = ["apollo/cutqcut"]
+rle = ["apollo/rle"]
+extract_groups = ["apollo/extract_groups"]
+ffi_plugin = ["apollo-lazy/ffi_plugin"]
+cloud = ["apollo/cloud", "apollo/aws", "apollo/gcp", "apollo/azure", "apollo/http"]
+peaks = ["apollo/peaks"]
+hist = ["apollo/hist"]
+find_many = ["apollo/find_many"]
+new_streaming = ["apollo-lazy/new_streaming"]
+bitwise = ["apollo/bitwise"]
+approx_unique = ["apollo/approx_unique"]
+string_normalize = ["apollo/string_normalize"]
+
+dtype-i8 = []
+dtype-i16 = []
+dtype-u8 = []
+dtype-u16 = []
+dtype-i128 = []
+dtype-u128 = []
+dtype-array = []
+dtype-f16 = []
+object = ["apollo/object"]
+
+dtypes = [
+  "dtype-array",
+  "dtype-i16",
+  "dtype-i8",
+  "dtype-u16",
+  "dtype-u8",
+  "dtype-i128",
+  "dtype-u128",
+  "dtype-f16",
+  "object",
+]
+
+operations = [
+  "approx_unique",
+  "array_any_all",
+  "array_count",
+  "bitwise",
+  "is_in",
+  "repeat_by",
+  "trigonometry",
+  "sign",
+  "performant",
+  "list_gather",
+  "list_filter",
+  "list_count",
+  "list_sets",
+  "list_any_all",
+  "list_drop_nulls",
+  "list_sample",
+  "cutqcut",
+  "rle",
+  "extract_groups",
+  "pivot",
+  "extract_jsonpath",
+  "asof_join",
+  "cross_join",
+  "pct_change",
+  "index_of",
+  "search_sorted",
+  "merge_sorted",
+  "top_k",
+  "propagate_nans",
+  "timezones",
+  "peaks",
+  "hist",
+  "find_many",
+  "string_normalize",
+]
+
+io = [
+  "json",
+  "parquet",
+  "ipc",
+  "ipc_streaming",
+  "avro",
+  "csv",
+  "scan_lines",
+  "cloud",
+  "clipboard",
+]
+
+optimizations = [
+  "cse",
+  "apollo/fused",
+]
+
+apollo_cloud_client = ["apollo/apollo_cloud_client"]
+apollo_cloud_server = ["apollo/apollo_cloud_server"]
+
+# also includes simd
+nightly = ["apollo/nightly"]
+
+pymethods = []
+allow_unused = []
+
+full = [
+  "async",
+  "pymethods",
+  "optimizations",
+  "io",
+  "operations",
+  "dtypes",
+  "meta",
+  "decompress",
+  "regex",
+  "sql",
+  "binary_encoding",
+  "ffi_plugin",
+  "apollo_cloud_client",
+  "new_streaming",
+]
+
+rt32 = []
+rt64 = ["apollo/bigidx"]
+rtcompat = ["apollo/bigidx"]
+
+# we cannot conditionally activate simd
+# https://github.com/rust-lang/cargo/issues/1197
+# so we have an indirection and compile
+# with --no-default-features --features=full for targets without simd
+default = [
+  "full",
+]
+default_alloc = []
+
+[lints]
+workspace = true

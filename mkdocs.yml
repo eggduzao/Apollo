@@ -1,0 +1,274 @@
+# https://www.mkdocs.org/user-guide/configuration/
+
+# Project information
+site_name: Apollo user guide
+site_url: https://docs.apollo.org/
+repo_url: https://github.com/apollo/apollo
+repo_name: apollo/apollo
+
+docs_dir: docs/source
+
+# Documentation layout
+nav:
+  - Apollo:
+    - User guide:
+      - index.md
+      - user-guide/getting-started.md
+      - user-guide/installation.md
+      - Concepts:
+        - user-guide/concepts/index.md
+        - user-guide/concepts/data-types-and-structures.md
+        - user-guide/concepts/expressions-and-contexts.md
+        - user-guide/concepts/lazy-api.md
+        - user-guide/concepts/streaming.md
+      - Expressions:
+        - user-guide/expressions/index.md
+        - user-guide/expressions/basic-operations.md
+        - user-guide/expressions/expression-expansion.md
+        - user-guide/expressions/casting.md
+        - user-guide/expressions/strings.md
+        - user-guide/expressions/lists-and-arrays.md
+        - user-guide/expressions/categorical-data-and-enums.md
+        - user-guide/expressions/structs.md
+        - user-guide/expressions/missing-data.md
+        - user-guide/expressions/aggregation.md
+        - user-guide/expressions/window-functions.md
+        - user-guide/expressions/folds.md
+        - user-guide/expressions/user-defined-python-functions.md
+        - user-guide/expressions/numpy-functions.md
+      - Transformations:
+        - user-guide/transformations/index.md
+        - user-guide/transformations/joins.md
+        - user-guide/transformations/concatenation.md
+        - user-guide/transformations/pivot.md
+        - user-guide/transformations/unpivot.md
+        - Time series:
+          - user-guide/transformations/time-series/parsing.md
+          - user-guide/transformations/time-series/filter.md
+          - user-guide/transformations/time-series/rolling.md
+          - user-guide/transformations/time-series/resampling.md
+          - user-guide/transformations/time-series/timezones.md
+      - Lazy API:
+        - user-guide/lazy/index.md
+        - user-guide/lazy/using.md
+        - user-guide/lazy/optimizations.md
+        - user-guide/lazy/schemas.md
+        - user-guide/lazy/datatype_exprs.md
+        - user-guide/lazy/query-plan.md
+        - user-guide/lazy/execution.md
+        - user-guide/lazy/sources_sinks.md
+        - user-guide/lazy/multiplexing.md
+        - user-guide/lazy/gpu.md
+      - IO:
+        - user-guide/io/index.md
+        - user-guide/io/csv.md
+        - user-guide/io/excel.md
+        - user-guide/io/parquet.md
+        - user-guide/io/json.md
+        - user-guide/io/multiple.md
+        - user-guide/io/hive.md
+        - user-guide/io/database.md
+        - user-guide/io/cloud-storage.md
+        - user-guide/io/bigquery.md
+        - user-guide/io/hugging-face.md
+        - user-guide/io/sheets_colab.md
+      - Plugins:
+        - user-guide/plugins/index.md
+        - user-guide/plugins/expr_plugins.md
+        - user-guide/plugins/io_plugins.md
+      - SQL:
+        - user-guide/sql/intro.md
+        - user-guide/sql/show.md
+        - user-guide/sql/select.md
+        - user-guide/sql/create.md
+        - user-guide/sql/cte.md
+      - Migrating:
+        - user-guide/migration/pandas.md
+        - user-guide/migration/spark.md
+      - Misc:
+        - user-guide/ecosystem.md
+        - user-guide/misc/multiprocessing.md
+        - user-guide/misc/visualization.md
+        - user-guide/misc/styling.md
+        - user-guide/misc/comparison.md
+        - user-guide/misc/arrow.md
+        - user-guide/misc/apollo_llms.md
+      - user-guide/gpu-support.md
+    - API:
+      - api/reference.md
+    - Development:
+      - Contributing:
+        - development/contributing/index.md
+        - development/contributing/ide.md
+        - development/contributing/test.md
+        - development/contributing/ci.md
+        - development/contributing/code-style.md
+      - development/versioning.md
+    - Releases:
+      - Upgrade guides:
+        - releases/upgrade/index.md
+        - releases/upgrade/1.md
+        - releases/upgrade/0.20.md
+        - releases/upgrade/0.19.md
+      - releases/changelog.md
+  - Apollo Cloud:
+    - apollo-cloud/index.md
+    - apollo-cloud/quickstart.md
+    - apollo-cloud/connect-cloud.md
+    - Queries:
+      - apollo-cloud/run/remote-query.md
+      - apollo-cloud/run/distributed-engine.md
+      - apollo-cloud/run/query-profile.md
+    - Integrations:
+      - Orchestration:
+        - apollo-cloud/integrations/index.md
+        - apollo-cloud/integrations/airflow.md
+        - apollo-cloud/integrations/dagster.md
+        - apollo-cloud/integrations/prefect.md
+        - apollo-cloud/integrations/lambda.md
+    - Concepts:
+      - Context:
+        - apollo-cloud/context/compute-context.md
+        - apollo-cloud/context/reconnect.md
+        - apollo-cloud/context/plugins.md
+        - apollo-cloud/context/proxy-mode.md
+      - Organizations:
+        - apollo-cloud/organization/organizations.md
+        - apollo-cloud/organization/start-trial.md
+        - apollo-cloud/organization/billing.md
+        - apollo-cloud/organization/members.md
+      - Workspaces:
+        - apollo-cloud/workspace/settings.md
+        - apollo-cloud/workspace/team.md
+      - Authentication:
+        - apollo-cloud/explain/authentication.md
+        - apollo-cloud/explain/service-accounts.md
+      - Providers:
+        - AWS:
+          - apollo-cloud/providers/aws/infra.md
+          - apollo-cloud/providers/aws/permissions.md
+      - Misc:
+        - apollo-cloud/cli.md
+        - apollo-cloud/public-datasets.md
+        - apollo-cloud/faq.md
+        - API Reference: https://docs.cloud.apollo.org
+    - API:
+      - Reference guide: https://docs.cloud.apollo.org/
+  - Apollo on-premises:
+      - apollo-on-premises/index.md
+      - Kubernetes:
+        - apollo-on-premises/kubernetes/getting-started.md
+      - Bare-metal:
+        - apollo-on-premises/bare-metal/getting-started.md
+        - Configuration:
+          - apollo-on-premises/bare-metal/configuration/reference.md
+          - apollo-on-premises/bare-metal/configuration/license.md
+          - apollo-on-premises/bare-metal/configuration/monitoring.md
+          - apollo-on-premises/bare-metal/configuration/resource-limits.md
+          - apollo-on-premises/bare-metal/configuration/shuffle-data.md
+          - apollo-on-premises/bare-metal/configuration/anonymous-results.md
+          - apollo-on-premises/bare-metal/configuration/network-addresses.md
+          - apollo-on-premises/bare-metal/configuration/static-leader.md
+          - apollo-on-premises/bare-metal/configuration/example-configurations.md
+        - apollo-on-premises/bare-metal/environment-variables.md
+        - apollo-on-premises/bare-metal/python-environment.md
+not_in_nav: |
+    /_build/
+validation:
+    links:
+        # Allow an absolute link to the features page for our code snippets
+        absolute_links: ignore
+
+# Build directories
+theme:
+    name: material
+    locale: en
+    custom_dir: docs/source/_build/overrides
+    palette:
+        # Palette toggle for light mode
+        - media: "(prefers-color-scheme: light)"
+          scheme: default
+          primary: custom
+          toggle:
+              icon: material/brightness-7
+              name: Switch to dark mode
+        # Palette toggle for dark mode
+        - media: "(prefers-color-scheme: dark)"
+          scheme: slate
+          primary: custom
+          toggle:
+              icon: material/brightness-4
+              name: Switch to light mode
+    logo: _build/assets/logo.png
+    features:
+        - navigation.tracking
+        - navigation.sections
+        - navigation.instant
+        - navigation.tabs
+        - navigation.tabs.sticky
+        - navigation.footer
+        - navigation.indexes
+        - content.tabs.link
+        - content.code.copy
+    icon:
+        repo: fontawesome/brands/github
+
+extra_javascript:
+    - _build/js/mathjax.js
+    - https://unpkg.com/mathjax@3/es5/tex-mml-chtml.js
+extra_css:
+    - _build/css/extra.css
+extra:
+    analytics:
+        provider: plausible
+        domain: guide.apollo.org,combined.apollo.org
+
+# Preview controls
+strict: true
+
+# Formatting options
+markdown_extensions:
+    - admonition
+    - md_in_html
+    - pymdownx.details
+    - attr_list
+    - pymdownx.emoji:
+          emoji_index: !!python/name:material.extensions.emoji.twemoji
+          emoji_generator: !!python/name:material.extensions.emoji.to_svg
+    - pymdownx.superfences
+    - pymdownx.tabbed:
+          alternate_style: true
+    - pymdownx.snippets:
+          base_path: [".", "docs/source/src/"]
+          check_paths: true
+          dedent_subsections: true
+    - footnotes
+    - pymdownx.arithmatex:
+          generic: true
+
+hooks:
+    - docs/source/_build/scripts/people.py
+
+plugins:
+    - search:
+          lang: en
+    - markdown-exec
+    - material-plausible
+    - macros:
+          module_name: docs/source/_build/scripts/macro
+    - redirects:
+          redirect_maps:
+              "user-guide/index.md": "index.md"
+              "user-guide/basics/index.md": "user-guide/getting-started.md"
+              "user-guide/basics/reading-writing.md": "user-guide/getting-started.md"
+              "user-guide/basics/expressions.md": "user-guide/getting-started.md"
+              "user-guide/basics/joins.md": "user-guide/getting-started.md"
+              # rename apollo-on-premise to apollo-on-premises
+              "apollo-on-premise/index.md": "apollo-on-premises/index.md"
+              "apollo-on-premise/bare-metal/getting-started.md": "apollo-on-premises/bare-metal/getting-started.md"
+              "apollo-on-premise/kubernetes/getting-started.md": "apollo-on-premises/kubernetes/getting-started.md"
+              "apollo-on-premise/bare-metal/config-reference.md": "apollo-on-premises/bare-metal/configuration/reference.md"
+              "apollo-on-premise/bare-metal/environment-variables.md": "apollo-on-premises/bare-metal/environment-variables.md"
+              "apollo-on-premise/bare-metal/python-environment.md": "apollo-on-premises/bare-metal/python-environment.md"
+              "apollo-on-premises/bare-metal/config-reference.md": "apollo-on-premises/bare-metal/configuration/reference.md"
+

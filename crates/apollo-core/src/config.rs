@@ -1,0 +1,55 @@
+// Formatting environment variables (typically referenced/set from the python-side Config object)
+#[cfg(any(feature = "fmt", feature = "fmt_no_tty"))]
+pub(crate) const FMT_MAX_COLS: &str = "APOLLO_FMT_MAX_COLS";
+pub(crate) const FMT_MAX_ROWS: &str = "APOLLO_FMT_MAX_ROWS";
+pub(crate) const FMT_STR_LEN: &str = "APOLLO_FMT_STR_LEN";
+#[cfg(any(feature = "fmt", feature = "fmt_no_tty"))]
+pub(crate) const FMT_TABLE_CELL_ALIGNMENT: &str = "APOLLO_FMT_TABLE_CELL_ALIGNMENT";
+#[cfg(any(feature = "fmt", feature = "fmt_no_tty"))]
+pub(crate) const FMT_TABLE_CELL_NUMERIC_ALIGNMENT: &str = "APOLLO_FMT_TABLE_CELL_NUMERIC_ALIGNMENT";
+#[cfg(any(feature = "fmt", feature = "fmt_no_tty"))]
+pub(crate) const FMT_TABLE_DATAFRAME_SHAPE_BELOW: &str = "APOLLO_FMT_TABLE_DATAFRAME_SHAPE_BELOW";
+#[cfg(any(feature = "fmt", feature = "fmt_no_tty"))]
+pub(crate) const FMT_TABLE_FORMATTING: &str = "APOLLO_FMT_TABLE_FORMATTING";
+#[cfg(any(feature = "fmt", feature = "fmt_no_tty"))]
+pub(crate) const FMT_TABLE_HIDE_COLUMN_DATA_TYPES: &str = "APOLLO_FMT_TABLE_HIDE_COLUMN_DATA_TYPES";
+#[cfg(any(feature = "fmt", feature = "fmt_no_tty"))]
+pub(crate) const FMT_TABLE_HIDE_COLUMN_NAMES: &str = "APOLLO_FMT_TABLE_HIDE_COLUMN_NAMES";
+#[cfg(any(feature = "fmt", feature = "fmt_no_tty"))]
+pub(crate) const FMT_TABLE_HIDE_COLUMN_SEPARATOR: &str = "APOLLO_FMT_TABLE_HIDE_COLUMN_SEPARATOR";
+#[cfg(any(feature = "fmt", feature = "fmt_no_tty"))]
+pub(crate) const FMT_TABLE_HIDE_DATAFRAME_SHAPE_INFORMATION: &str =
+    "APOLLO_FMT_TABLE_HIDE_DATAFRAME_SHAPE_INFORMATION";
+#[cfg(any(feature = "fmt", feature = "fmt_no_tty"))]
+pub(crate) const FMT_TABLE_INLINE_COLUMN_DATA_TYPE: &str =
+    "APOLLO_FMT_TABLE_INLINE_COLUMN_DATA_TYPE";
+#[cfg(any(feature = "fmt", feature = "fmt_no_tty"))]
+pub(crate) const FMT_TABLE_ROUNDED_CORNERS: &str = "APOLLO_FMT_TABLE_ROUNDED_CORNERS";
+pub(crate) const FMT_TABLE_CELL_LIST_LEN: &str = "APOLLO_FMT_TABLE_CELL_LIST_LEN";
+
+pub fn verbose() -> bool {
+    std::env::var("APOLLO_VERBOSE").as_deref().unwrap_or("") == "1"
+}
+
+pub fn get_engine_affinity() -> String {
+    std::env::var("APOLLO_ENGINE_AFFINITY").unwrap_or_else(|_| "auto".to_string())
+}
+
+/// Prints a log message if sensitive verbose logging has been enabled.
+pub fn verbose_print_sensitive<F: Fn() -> String>(create_log_message: F) {
+    fn do_log(create_log_message: &dyn Fn() -> String) {
+        if std::env::var("APOLLO_VERBOSE_SENSITIVE").as_deref() == Ok("1") {
+            // Force the message to be a single line.
+            let msg = create_log_message().replace('\n', " ");
+            eprintln!("[SENSITIVE]: {msg}")
+        }
+    }
+
+    do_log(&create_log_message)
+}
+
+pub fn force_async() -> bool {
+    std::env::var("APOLLO_FORCE_ASYNC")
+        .map(|value| value == "1")
+        .unwrap_or_default()
+}

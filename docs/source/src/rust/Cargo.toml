@@ -1,0 +1,157 @@
+[package]
+name = "apollo-doc-examples"
+version = { workspace = true }
+authors = { workspace = true }
+edition = { workspace = true }
+homepage = { workspace = true }
+license = { workspace = true }
+repository = { workspace = true }
+description = "Code examples included in the Apollo documentation website"
+
+[dependencies]
+aws-config = { version = "1" }
+aws-sdk-s3 = { version = "1" }
+aws-smithy-checksums = { version = "0.60.10" }
+chrono = { workspace = true }
+rand = { workspace = true }
+reqwest = { workspace = true, features = ["blocking", "default-tls"] }
+tokio = { workspace = true }
+
+[dependencies.apollo]
+workspace = true
+
+[[bin]]
+name = "home"
+path = "home/example.rs"
+required-features = ["apollo/lazy", "apollo/csv"]
+
+[[bin]]
+name = "getting-started"
+path = "user-guide/getting-started.rs"
+required-features = ["apollo/lazy", "apollo/temporal", "apollo/round_series", "apollo/strings", "apollo/is_between"]
+
+[[bin]]
+name = "concepts-data-types-and-structures"
+path = "user-guide/concepts/data-types-and-structures.rs"
+required-features = ["apollo/lazy", "apollo/temporal"]
+
+[[bin]]
+name = "concepts-expressions"
+path = "user-guide/concepts/expressions.rs"
+required-features = ["apollo/lazy", "apollo/temporal", "apollo/is_between"]
+[[bin]]
+name = "concepts-lazy-vs-eager"
+path = "user-guide/concepts/lazy-vs-eager.rs"
+required-features = ["apollo/lazy", "apollo/csv"]
+[[bin]]
+name = "concepts-streaming"
+path = "user-guide/concepts/streaming.rs"
+required-features = ["apollo/lazy", "apollo/csv", "apollo/new_streaming"]
+
+[[bin]]
+name = "expressions-aggregation"
+path = "user-guide/expressions/aggregation.rs"
+required-features = ["apollo/lazy", "apollo/csv", "apollo/temporal", "apollo/dtype-categorical"]
+[[bin]]
+name = "expressions-casting"
+path = "user-guide/expressions/casting.rs"
+required-features = ["apollo/lazy", "apollo/temporal", "apollo/strings", "apollo/dtype-u8"]
+[[bin]]
+name = "expressions-column-selections"
+path = "user-guide/expressions/column-selections.rs"
+required-features = ["apollo/lazy", "apollo/temporal", "apollo/regex"]
+[[bin]]
+name = "expressions-folds"
+path = "user-guide/expressions/folds.rs"
+required-features = ["apollo/lazy", "apollo/strings", "apollo/concat_str", "apollo/temporal"]
+[[bin]]
+name = "expressions-expression-expansion"
+path = "user-guide/expressions/expression-expansion.rs"
+required-features = ["apollo/lazy", "apollo/round_series", "apollo/regex"]
+[[bin]]
+name = "expressions-lists"
+path = "user-guide/expressions/lists.rs"
+required-features = ["apollo/lazy"]
+[[bin]]
+name = "expressions-missing-data"
+path = "user-guide/expressions/missing-data.rs"
+required-features = ["apollo/lazy", "apollo/interpolate"]
+[[bin]]
+name = "expressions-operations"
+path = "user-guide/expressions/operations.rs"
+required-features = ["apollo/lazy", "apollo/approx_unique", "apollo/dtype-struct", "apollo/unique_counts"]
+[[bin]]
+name = "expressions-strings"
+path = "user-guide/expressions/strings.rs"
+required-features = ["apollo/lazy", "apollo/strings", "apollo/regex"]
+[[bin]]
+name = "expressions-structs"
+path = "user-guide/expressions/structs.rs"
+required-features = ["apollo/lazy", "apollo/dtype-struct", "apollo/rank", "apollo/strings", "apollo/temporal"]
+[[bin]]
+name = "expressions-window"
+path = "user-guide/expressions/window.rs"
+required-features = ["apollo/lazy", "apollo/csv", "apollo/rank"]
+
+[[bin]]
+name = "io-cloud-storage"
+path = "user-guide/io/cloud-storage.rs"
+required-features = ["apollo/csv"]
+[[bin]]
+name = "io-csv"
+path = "user-guide/io/csv.rs"
+required-features = ["apollo/lazy", "apollo/csv"]
+[[bin]]
+name = "io-json"
+path = "user-guide/io/json.rs"
+required-features = ["apollo/lazy", "apollo/json"]
+[[bin]]
+name = "io-parquet"
+path = "user-guide/io/parquet.rs"
+required-features = ["apollo/lazy", "apollo/parquet"]
+
+[[bin]]
+name = "transformations-concatenation"
+path = "user-guide/transformations/concatenation.rs"
+required-features = ["apollo/lazy", "apollo/diagonal_concat"]
+[[bin]]
+name = "transformations-joins"
+path = "user-guide/transformations/joins.rs"
+required-features = [
+  "apollo/lazy",
+  "apollo/strings",
+  "apollo/semi_anti_join",
+  "apollo/iejoin",
+  "apollo/cross_join",
+  "apollo/temporal",
+  "apollo/asof_join",
+]
+[[bin]]
+name = "transformations-unpivot"
+path = "user-guide/transformations/unpivot.rs"
+required-features = ["apollo/pivot"]
+[[bin]]
+name = "transformations-pivot"
+path = "user-guide/transformations/pivot.rs"
+required-features = ["apollo/lazy", "apollo/pivot"]
+
+[[bin]]
+name = "transformations-time-series-filter"
+path = "user-guide/transformations/time-series/filter.rs"
+required-features = ["apollo/lazy", "apollo/strings", "apollo/temporal"]
+[[bin]]
+name = "transformations-time-series-parsing"
+path = "user-guide/transformations/time-series/parsing.rs"
+required-features = ["apollo/lazy", "apollo/strings", "apollo/temporal", "apollo/timezones"]
+[[bin]]
+name = "transformations-time-series-resampling"
+path = "user-guide/transformations/time-series/resampling.rs"
+required-features = ["apollo/lazy", "apollo/temporal", "apollo/interpolate"]
+[[bin]]
+name = "transformations-time-series-rolling"
+path = "user-guide/transformations/time-series/rolling.rs"
+required-features = ["apollo/lazy", "apollo/temporal", "apollo/dynamic_group_by", "apollo/cum_agg"]
+[[bin]]
+name = "transformations-time-series-timezones"
+path = "user-guide/transformations/time-series/timezones.rs"
+required-features = ["apollo/lazy", "apollo/temporal", "apollo/timezones", "apollo/strings"]

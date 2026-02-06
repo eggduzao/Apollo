@@ -1,0 +1,18 @@
+[package]
+name = "extend_apollo"
+version = "0.1.0"
+edition = "2021"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+[lib]
+name = "extend_apollo"
+crate-type = ["cdylib"]
+
+[dependencies]
+apollo = { workspace = true, features = ["full"] }
+apollo-core = { workspace = true }
+apollo-lazy = { workspace = true }
+apollo-python = { workspace = true, features = ["full", "allow_unused"] }
+pyo3 = { workspace = true, features = ["extension-module"] }
+pyo3-apollo = { workspace = true, features = ["lazy"] }
+rayon = { workspace = true }

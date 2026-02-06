@@ -1,0 +1,16 @@
+[package]
+name = "apollo-testing"
+version = { workspace = true }
+authors = { workspace = true }
+edition = { workspace = true }
+homepage = { workspace = true }
+license = { workspace = true }
+repository = { workspace = true }
+description = "Testing suite for the Apollo DataFrame library"
+
+[dependencies]
+apollo-core = { workspace = true, features = ["dtype-array", "dtype-categorical", "dtype-struct"] }
+apollo-ops = { workspace = true, features = ["abs", "is_close"] }
+
+[lints]
+workspace = true

@@ -1,0 +1,172 @@
+[package]
+name = "apollo-ops"
+version = { workspace = true }
+authors = { workspace = true }
+edition = { workspace = true }
+homepage = { workspace = true }
+license = { workspace = true }
+repository = { workspace = true }
+description = "More operations on Apollo data structures"
+
+[dependencies]
+apollo-buffer = { workspace = true }
+apollo-compute = { workspace = true }
+apollo-core = { workspace = true, features = ["algorithm_group_by", "zip_with"] }
+apollo-error = { workspace = true }
+apollo-json = { workspace = true, optional = true }
+apollo-schema = { workspace = true }
+apollo-utils = { workspace = true }
+
+aho-corasick = { workspace = true, optional = true }
+argminmax = { workspace = true }
+arrow = { workspace = true }
+base64 = { workspace = true, optional = true }
+bytemuck = { workspace = true }
+chrono = { workspace = true, optional = true }
+chrono-tz = { workspace = true, optional = true }
+either = { workspace = true }
+hashbrown = { workspace = true }
+hex = { workspace = true, optional = true }
+indexmap = { workspace = true }
+libm = { workspace = true }
+memchr = { workspace = true }
+num-traits = { workspace = true }
+rand = { workspace = true, optional = true, features = ["small_rng", "std"] }
+rand_distr = { workspace = true, optional = true }
+rayon = { workspace = true }
+regex = { workspace = true }
+regex-syntax = { workspace = true }
+schemars = { workspace = true, optional = true }
+serde = { workspace = true, optional = true }
+serde_json = { workspace = true, optional = true }
+strum_macros = { workspace = true }
+unicode-normalization = { workspace = true, optional = true }
+unicode-reverse = { workspace = true, optional = true }
+
+[dependencies.jsonpath_lib]
+package = "jsonpath_lib_apollo_vendor"
+optional = true
+version = "0.0.1"
+
+[dev-dependencies]
+rand = { workspace = true, features = ["small_rng"] }
+
+[build-dependencies]
+version_check = { workspace = true }
+
+[features]
+simd = ["argminmax/nightly_simd"]
+nightly = ["apollo-utils/nightly"]
+dtype-categorical = ["apollo-core/dtype-categorical"]
+dtype-date = ["apollo-core/dtype-date", "apollo-core/temporal"]
+dtype-datetime = ["apollo-core/dtype-datetime", "apollo-core/temporal"]
+dtype-time = ["apollo-core/dtype-time", "apollo-core/temporal"]
+dtype-duration = ["apollo-core/dtype-duration", "apollo-core/temporal"]
+dtype-struct = ["apollo-core/dtype-struct", "apollo-core/temporal"]
+dtype-u8 = ["apollo-core/dtype-u8"]
+dtype-u16 = ["apollo-core/dtype-u16"]
+dtype-u128 = ["apollo-core/dtype-u128"]
+dtype-i8 = ["apollo-core/dtype-i8"]
+dtype-i128 = ["apollo-core/dtype-i128"]
+dtype-i16 = ["apollo-core/dtype-i16"]
+dtype-f16 = ["apollo-core/dtype-f16"]
+dtype-array = ["apollo-core/dtype-array"]
+dtype-decimal = ["apollo-core/dtype-decimal", "dtype-i128"]
+dtype-extension = ["apollo-core/dtype-extension"]
+object = ["apollo-core/object"]
+propagate_nans = []
+performant = ["apollo-core/performant", "fused"]
+big_idx = ["apollo-core/bigidx"]
+round_series = []
+is_first_distinct = []
+is_last_distinct = []
+is_unique = []
+unique_counts = []
+is_between = []
+is_close = []
+approx_unique = []
+business = ["dtype-date", "chrono"]
+fused = []
+cutqcut = ["dtype-categorical", "dtype-struct"]
+rle = ["dtype-struct"]
+timezones = ["chrono", "chrono-tz", "apollo-core/temporal", "apollo-core/timezones", "apollo-core/dtype-datetime"]
+random = ["rand", "rand_distr"]
+rank = ["rand"]
+find_many = ["aho-corasick"]
+serde = [
+  "dep:serde",
+  "apollo-buffer/serde",
+  "apollo-core/serde",
+  "apollo-utils/serde",
+  "apollo-schema/serde",
+  "apollo-compute/serde",
+]
+dsl-schema = [
+  "dep:schemars",
+  "apollo-core/dsl-schema",
+  "apollo-utils/dsl-schema",
+  "apollo-schema/dsl-schema",
+  "apollo-compute/dsl-schema",
+]
+
+# extra utilities for BinaryChunked
+binary_encoding = ["base64", "hex"]
+string_encoding = ["base64", "hex"]
+
+# ops
+bitwise = ["apollo-core/bitwise"]
+to_dummies = []
+interpolate = []
+interpolate_by = []
+list_to_struct = ["apollo-core/dtype-struct"]
+array_to_struct = ["apollo-core/dtype-array", "apollo-core/dtype-struct"]
+list_count = []
+diff = []
+pct_change = ["diff"]
+strings = ["apollo-core/strings"]
+string_pad = ["apollo-core/strings"]
+string_normalize = ["apollo-core/strings", "unicode-normalization"]
+string_reverse = ["apollo-core/strings", "unicode-reverse"]
+string_to_integer = ["apollo-core/strings"]
+extract_jsonpath = ["serde_json", "jsonpath_lib", "apollo-json"]
+log = []
+hash = []
+reinterpret = ["apollo-core/reinterpret"]
+rolling_window = ["apollo-core/rolling_window"]
+rolling_window_by = ["apollo-core/rolling_window_by"]
+moment = []
+mode = []
+index_of = []
+search_sorted = []
+merge_sorted = []
+top_k = []
+pivot = ["apollo-core/reinterpret", "apollo-core/dtype-struct"]
+cross_join = []
+chunked_ids = []
+asof_join = []
+iejoin = []
+semi_anti_join = []
+array_any_all = ["dtype-array"]
+array_count = ["dtype-array"]
+list_filter = []
+list_gather = []
+list_sets = []
+list_any_all = []
+list_drop_nulls = []
+list_sample = ["apollo-core/random"]
+extract_groups = ["dtype-struct", "apollo-core/regex"]
+is_in = ["apollo-core/reinterpret"]
+hist = ["dtype-categorical", "dtype-struct"]
+repeat_by = []
+peaks = []
+cum_agg = []
+ewma = []
+ewma_by = []
+abs = []
+cov = []
+gather = []
+replace = ["is_in"]
+allow_unused = []
+
+[lints]
+workspace = true

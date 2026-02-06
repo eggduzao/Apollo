@@ -1,0 +1,28 @@
+[package]
+name = "apollo-dylib"
+version.workspace = true
+authors.workspace = true
+edition.workspace = true
+homepage.workspace = true
+license.workspace = true
+repository.workspace = true
+
+[lib]
+crate-type = ["dylib", "rlib"]
+
+[dependencies]
+arrow = { workspace = true, optional = true, features = ["io_flight"] }
+apollo = { workspace = true, features = ["full"] }
+apollo-core = { workspace = true, optional = true }
+apollo-expr = { workspace = true, optional = true }
+apollo-lazy = { workspace = true, optional = true }
+apollo-mem-engine = { workspace = true, optional = true }
+apollo-plan = { workspace = true, optional = true }
+apollo-python = { workspace = true, optional = true, default-features = true }
+
+[features]
+private = ["apollo-plan", "arrow", "apollo-core", "apollo-lazy", "apollo-expr", "apollo-mem-engine"]
+python = ["apollo-plan?/python", "apollo-python", "apollo-lazy?/python", "apollo-mem-engine?/python"]
+
+[lints]
+workspace = true

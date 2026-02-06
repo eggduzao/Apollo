@@ -1,0 +1,32 @@
+[package]
+name = "apollo-dtype"
+version.workspace = true
+authors.workspace = true
+edition.workspace = true
+homepage.workspace = true
+license.workspace = true
+repository.workspace = true
+description = "Low-level datatype definitions of the Apollo project."
+
+[dependencies]
+arrow = { workspace = true }
+boxcar = { workspace = true }
+hashbrown = { workspace = true }
+apollo-error = { workspace = true }
+apollo-utils = { workspace = true }
+schemars = { workspace = true, optional = true }
+serde = { workspace = true, optional = true }
+uuid = { workspace = true }
+
+[target.'cfg(target_family = "wasm")'.dependencies]
+uuid = { workspace = true, features = ["js"] }
+
+[features]
+default = []
+serde = ["dep:serde", "arrow/serde", "apollo-utils/serde"]
+dsl-schema = ["dep:schemars", "arrow/dsl-schema", "apollo-utils/dsl-schema"]
+dtype-categorical = []
+dtype-extension = []
+
+[lints]
+workspace = true

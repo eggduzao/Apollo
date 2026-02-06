@@ -1,0 +1,111 @@
+[package]
+name = "apollo-runtime-32"
+# example: 1.35.0-beta.1
+version = "1.38.0"
+edition = "2021"
+
+[lib]
+name = "_apollo_runtime"
+crate-type = ["cdylib"]
+
+[dependencies]
+libc = { workspace = true }
+apollo-python = { workspace = true, features = ["allocator", "c_api", "pymethods", "iejoin", "rt32"] }
+pyo3 = { workspace = true, features = ["abi3-py310", "chrono", "extension-module", "multiple-pymethods"] }
+
+either = { workspace = true }
+
+[build-dependencies]
+rustflags = { workspace = true }
+
+[features]
+# Features used in this crate
+ffi_plugin = ["apollo-python/ffi_plugin"]
+csv = ["apollo-python/csv"]
+apollo_cloud_client = ["apollo-python/apollo_cloud_client"]
+apollo_cloud_server = ["apollo-python/apollo_cloud_server"]
+object = ["apollo-python/object"]
+clipboard = ["apollo-python/clipboard"]
+sql = ["apollo-python/sql"]
+trigonometry = ["apollo-python/trigonometry"]
+parquet = ["apollo-python/parquet"]
+ipc = ["apollo-python/ipc"]
+catalog = ["apollo-python/catalog"]
+
+# Features passed through to the apollo-python crate
+avro = ["apollo-python/avro"]
+ipc_streaming = ["apollo-python/ipc_streaming"]
+is_in = ["apollo-python/is_in"]
+json = ["apollo-python/json"]
+sign = ["apollo-python/sign"]
+asof_join = ["apollo-python/asof_join"]
+cross_join = ["apollo-python/cross_join"]
+pct_change = ["apollo-python/pct_change"]
+repeat_by = ["apollo-python/repeat_by"]
+# also includes simd
+nightly = ["apollo-python/nightly"]
+meta = ["apollo-python/meta"]
+search_sorted = ["apollo-python/search_sorted"]
+decompress = ["apollo-python/decompress"]
+regex = ["apollo-python/regex"]
+extract_jsonpath = ["apollo-python/extract_jsonpath"]
+pivot = ["apollo-python/pivot"]
+top_k = ["apollo-python/top_k"]
+propagate_nans = ["apollo-python/propagate_nans"]
+performant = ["apollo-python/performant"]
+timezones = ["apollo-python/timezones"]
+cse = ["apollo-python/cse"]
+merge_sorted = ["apollo-python/merge_sorted"]
+list_gather = ["apollo-python/list_gather"]
+list_filter = ["apollo-python/list_filter"]
+list_count = ["apollo-python/list_count"]
+array_count = ["apollo-python/array_count"]
+binary_encoding = ["apollo-python/binary_encoding"]
+list_sets = ["apollo-python/list_sets"]
+list_any_all = ["apollo-python/list_any_all"]
+array_any_all = ["apollo-python/array_any_all"]
+list_drop_nulls = ["apollo-python/list_drop_nulls"]
+list_sample = ["apollo-python/list_sample"]
+cutqcut = ["apollo-python/cutqcut"]
+rle = ["apollo-python/rle"]
+extract_groups = ["apollo-python/extract_groups"]
+cloud = ["apollo-python/cloud"]
+peaks = ["apollo-python/peaks"]
+hist = ["apollo-python/hist"]
+find_many = ["apollo-python/find_many"]
+new_streaming = ["apollo-python/new_streaming"]
+
+dtype-i8 = ["apollo-python/dtype-i8"]
+dtype-i16 = ["apollo-python/dtype-i16"]
+dtype-u8 = ["apollo-python/dtype-u8"]
+dtype-u16 = ["apollo-python/dtype-u16"]
+dtype-array = ["apollo-python/dtype-array"]
+
+dtypes = ["apollo-python/dtypes"]
+
+operations = ["apollo-python/operations"]
+
+io = ["apollo-python/io"]
+
+optimizations = ["apollo-python/optimizations"]
+
+full = [
+  "ffi_plugin",
+  "csv",
+  "apollo_cloud_client",
+  "object",
+  "clipboard",
+  "sql",
+  "trigonometry",
+  "parquet",
+  "ipc",
+  "catalog",
+  "apollo-python/full",
+  "performant",
+]
+
+default_alloc = ["apollo-python/default_alloc"]
+default = ["full", "nightly"]
+
+[lints]
+workspace = true

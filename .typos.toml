@@ -1,0 +1,46 @@
+[files]
+extend-exclude = [
+  ".git/",
+  "*.csv",
+  "*.gz",
+  "dists.dss",
+  "**/images/*",
+  "**/py-apollo/src/apollo/_utils/nest_asyncio.py",
+  "*.nix",
+  "**/crates/apollo-plan/dsl-schema-hashes.json",
+]
+ignore-hidden = false
+
+[default]
+extend-ignore-re = [
+  '"Theatre": \[.+\],',
+]
+
+[default.extend-words]
+arange = "arange"
+ser = "ser"
+splitted = "splitted"
+strat = "strat"
+typ = "typ"
+
+[type.py.extend-identifiers]
+ba = "ba"
+ody = "ody"
+ND = "ND"
+nd = "nd"
+NDArray1D = "NDArray1D"
+
+[type.rust.extend-identifiers]
+ANDed = "ANDed"
+bck = "bck"
+Fo = "Fo"
+ND = "ND"
+nd = "nd"
+NDJson = "NDJson"
+NDJsonSinkNode = "NDJsonSinkNode"
+NDJsonReadOptions = "NDJsonReadOptions"
+NDJsonFileReader = "NDJsonFileReader"
+NDJsonWriterStarter = "NDJsonWriterStarter"
+NDJsonWriterOptions = "NDJsonWriterOptions"
+opt_nd = "opt_nd"
+tpe = "tpe"

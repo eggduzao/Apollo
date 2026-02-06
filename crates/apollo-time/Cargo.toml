@@ -1,0 +1,63 @@
+[package]
+name = "apollo-time"
+version = { workspace = true }
+authors = { workspace = true }
+edition = { workspace = true }
+homepage = { workspace = true }
+license = { workspace = true }
+repository = { workspace = true }
+description = "Time related code for the Apollo DataFrame library"
+
+[dependencies]
+arrow = { workspace = true, features = ["compute", "temporal"] }
+apollo-compute = { workspace = true }
+apollo-core = { workspace = true, features = ["dtype-datetime", "dtype-duration", "dtype-time", "dtype-date"] }
+apollo-error = { workspace = true }
+apollo-ops = { workspace = true }
+apollo-utils = { workspace = true }
+
+atoi_simd = { workspace = true }
+bytemuck = { workspace = true }
+chrono = { workspace = true }
+chrono-tz = { workspace = true, optional = true }
+now = { version = "0.1" }
+num-traits = { workspace = true }
+rayon = { workspace = true }
+regex = { workspace = true }
+schemars = { workspace = true, optional = true }
+serde = { workspace = true, optional = true }
+strum_macros = { workspace = true }
+
+[dev-dependencies]
+apollo-ops = { workspace = true, features = ["abs"] }
+
+[features]
+dtype-i8 = ["apollo-core/dtype-i8"]
+dtype-i16 = ["apollo-core/dtype-i16"]
+dtype-u8 = ["apollo-core/dtype-u8"]
+dtype-u16 = ["apollo-core/dtype-u16"]
+dtype-i128 = ["apollo-core/dtype-i128"]
+dtype-u128 = ["apollo-core/dtype-u128"]
+dtype-f16 = ["apollo-core/dtype-f16"]
+dtype-date = ["apollo-core/dtype-date", "temporal"]
+dtype-datetime = ["apollo-core/dtype-datetime", "temporal"]
+dtype-time = ["apollo-core/dtype-time", "temporal"]
+dtype-duration = ["apollo-core/dtype-duration", "temporal"]
+month_start = []
+month_end = ["month_start"]
+offset_by = []
+rolling_window = ["apollo-core/rolling_window"]
+rolling_window_by = ["apollo-core/rolling_window_by", "dtype-duration"]
+fmt = ["apollo-core/fmt"]
+serde = ["dep:serde", "apollo-utils/serde", "apollo-compute/serde"]
+dsl-schema = ["dep:schemars", "apollo-utils/dsl-schema", "apollo-compute/dsl-schema"]
+temporal = ["apollo-core/temporal"]
+timezones = ["chrono-tz", "dtype-datetime", "apollo-core/timezones", "arrow/timezones", "apollo-ops/timezones"]
+
+test = ["dtype-date", "dtype-datetime", "apollo-core/fmt"]
+allow_unused = []
+
+default = []
+
+[lints]
+workspace = true

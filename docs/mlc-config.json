@@ -1,0 +1,17 @@
+{
+  "ignorePatterns": [
+    {
+      "pattern": "^https://crates.io/"
+    },
+    {
+      "pattern": "^https://stackoverflow.com/"
+    },
+    {
+      "pattern": "^https://marketplace.visualstudio.com/"
+    },
+    {
+      "pattern": "^https://codspeed.io/apollo/apollo$"
+    }
+  ],
+  "retryOn429": true
+}

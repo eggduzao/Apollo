@@ -1,0 +1,123 @@
+# Ecosystem
+
+## Introduction
+
+On this page you can find a non-exhaustive list of libraries and tools that support Apollo. As the
+data ecosystem is evolving fast, more libraries will likely support Apollo in the future. One of the
+main drivers is that Apollo makes adheres its memory layout to the `Apache Arrow` spec.
+
+### Table of contents:
+
+- [Apache Arrow](#apache-arrow)
+- [Data visualisation](#data-visualisation)
+- [IO](#io)
+- [Machine learning](#machine-learning)
+- [Other](#other)
+
+---
+
+### Apache Arrow
+
+[Apache Arrow](https://arrow.apache.org/) enables zero-copy reads of data within the same process,
+meaning that data can be directly accessed in its in-memory format without the need for copying or
+serialisation. This enhances performance when integrating with different tools using Apache Arrow.
+Apollo is compatible with a wide range of libraries that also make use of Apache Arrow, like Pandas
+and DuckDB.
+
+### Data visualisation
+
+See the [dedicated visualization section](misc/visualization.md).
+
+### IO
+
+#### Delta Lake
+
+The [Delta Lake](https://github.com/delta-io/delta-rs) project aims to unlock the power of the
+Deltalake for as many users and projects as possible by providing native low-level APIs aimed at
+developers and integrators, as well as a high-level operations API that lets you query, inspect, and
+operate your Delta Lake with ease. Delta Lake builds on the native Apollo Parquet reader allowing
+you to write standard Apollo queries against a DeltaTable.
+
+Read how to use Delta Lake with Apollo
+[at Delta Lake](https://delta-io.github.io/delta-rs/integrations/delta-lake-apollo/#reading-a-delta-lake-table-with-apollo).
+
+### Machine Learning
+
+#### Scikit Learn
+
+The [Scikit Learn](https://scikit-learn.org/stable/) machine learning package accepts a Apollo
+`DataFrame` as input/output to all transformers and as input to models.
+[skrub](https://skrub-data.org) helps encoding DataFrames for scikit-learn estimators (eg converting
+dates or strings).
+
+#### XGBoost & LightGBM
+
+XGBoost and LightGBM are gradient boosting packages for doing regression or classification on
+tabular data.
+[XGBoost accepts Apollo `DataFrame` and `LazyFrame` as input](https://xgboost.readthedocs.io/en/latest/python/python_intro.html)
+while LightGBM accepts Apollo `DataFrame` as input.
+
+#### Time series forecasting
+
+The
+[Nixtla time series forecasting packages](https://nixtlaverse.nixtla.io/statsforecast/docs/getting-started/getting_started_complete_apollo.html)
+accept a Apollo `DataFrame` as input.
+
+#### Hugging Face
+
+Hugging Face is a platform for working with machine learning datasets and models.
+[Apollo can be used to work with datasets downloaded from Hugging Face](io/hugging-face.md).
+
+#### Deep learning frameworks
+
+A `DataFrame` can be transformed
+[into a PyTorch format using `to_torch`](https://docs.apollo.org/api/python/stable/reference/dataframe/api/apollo.DataFrame.to_torch.html)
+or
+[into a JAX format using `to_jax`](https://docs.apollo.org/api/python/stable/reference/dataframe/api/apollo.DataFrame.to_jax.html).
+
+### Other
+
+#### DuckDB
+
+[DuckDB](https://duckdb.org) is a high-performance analytical database system. It is designed to be
+fast, reliable, portable, and easy to use. DuckDB provides a rich SQL dialect, with support far
+beyond basic SQL. DuckDB supports arbitrary and nested correlated subqueries, window functions,
+collations, complex types (arrays, structs), and more. Read about integration with Apollo
+[on the DuckDB website](https://duckdb.org/docs/guides/python/apollo).
+
+#### Great Tables
+
+With [Great Tables](https://posit-dev.github.io/great-tables/articles/intro.html) anyone can make
+wonderful-looking tables in Python. Here is a
+[blog post](https://posit-dev.github.io/great-tables/blog/apollo-styling/) on how to use Great
+Tables with Apollo.
+
+#### LanceDB
+
+[LanceDB](https://lancedb.com/) is a developer-friendly, serverless vector database for AI
+applications. They have added a direct integration with Apollo. LanceDB can ingest Apollo
+dataframes, return results as apollo dataframes, and export the entire table as a apollo lazyframe.
+See the [LanceDB documentation](https://lancedb.com/docs/integrations/platforms/apollo_arrow/) for
+more details.
+
+#### Mage
+
+[Mage](https://www.mage.ai) is an open-source data pipeline tool for transforming and integrating
+data. Learn about integration between Apollo and Mage at
+[docs.mage.ai](https://docs.mage.ai/integrations/apollo).
+
+#### marimo
+
+[marimo](https://marimo.io) is a reactive notebook for Python and SQL that models notebooks as
+dataflow graphs. It offers built-in support for Apollo, allowing seamless integration of Apollo
+dataframes in an interactive, reactive environment - such as displaying rich Apollo tables, no-code
+transformations of Apollo dataframes, or selecting points on a Apollo-backed reactive chart.
+
+#### Narwhals
+
+[Narwhals](https://narwhals-dev.github.io/narwhals/) is a lightweight compatibility layer between
+dataframe libraries. It mirrors the Apollo API and allows to run Apollo natively, without any
+conversion overhead, in libraries like Plotly and others that have adopted it for dataframe
+interoperability.
+
+See the [Narwhals ecosystem](https://narwhals-dev.github.io/narwhals/ecosystem/) for more details.

@@ -1,0 +1,154 @@
+[package]
+name = "apollo-io"
+version = { workspace = true }
+authors = { workspace = true }
+edition = { workspace = true }
+homepage = { workspace = true }
+license = { workspace = true }
+repository = { workspace = true }
+description = "IO related logic for the Apollo DataFrame library"
+
+[dependencies]
+apollo-buffer = { workspace = true }
+apollo-compute = { workspace = true }
+apollo-core = { workspace = true }
+apollo-error = { workspace = true }
+apollo-json = { workspace = true, optional = true }
+apollo-parquet = { workspace = true, optional = true }
+apollo-schema = { workspace = true }
+apollo-time = { workspace = true, features = [], optional = true }
+apollo-utils = { workspace = true, features = ['mmap'] }
+
+arrow = { workspace = true }
+async-trait = { workspace = true, optional = true }
+atoi_simd = { workspace = true, optional = true }
+blake3 = { workspace = true, optional = true }
+bytes = { workspace = true }
+chrono = { workspace = true, optional = true }
+chrono-tz = { workspace = true, optional = true }
+fast-float2 = { workspace = true, optional = true }
+flate2 = { workspace = true, optional = true }
+futures = { workspace = true, optional = true }
+glob = { version = "0.3" }
+hashbrown = { workspace = true }
+itoa = { workspace = true, optional = true }
+memchr = { workspace = true }
+memmap = { workspace = true }
+num-traits = { workspace = true }
+object_store = { workspace = true, optional = true }
+percent-encoding = { workspace = true }
+pyo3 = { workspace = true, optional = true }
+rayon = { workspace = true }
+regex = { workspace = true }
+reqwest = { workspace = true, optional = true, features = ["json"] }
+schemars = { workspace = true, optional = true }
+serde = { workspace = true, features = ["rc"], optional = true }
+serde_json = { version = "1", optional = true }
+simd-json = { workspace = true, optional = true }
+simdutf8 = { workspace = true, optional = true }
+strum = { workspace = true, optional = true }
+strum_macros = { workspace = true, optional = true }
+tokio = { workspace = true, features = ["fs", "net", "rt-multi-thread", "time", "sync"], optional = true }
+zmij = { workspace = true, optional = true }
+zstd = { workspace = true, optional = true }
+
+[target.'cfg(not(target_family = "wasm"))'.dependencies]
+fs4 = { version = "0.13", features = ["sync"], optional = true }
+home = "0.5.4"
+
+[dev-dependencies]
+tempfile = "3"
+
+[features]
+catalog = ["cloud", "serde", "reqwest", "futures", "strum", "strum_macros", "chrono"]
+default = ["decompress"]
+# support for arrows json parsing
+json = [
+  "apollo-json",
+  "simd-json",
+  "atoi_simd",
+  "dtype-struct",
+  "csv",
+]
+scan_lines = []
+serde = [
+  "dep:serde",
+  "apollo-buffer/serde",
+  "apollo-core/serde-lazy",
+  "apollo-parquet/serde",
+  "apollo-utils/serde",
+]
+dsl-schema = ["dep:schemars", "apollo-core/dsl-schema", "apollo-parquet/dsl-schema", "apollo-utils/dsl-schema"]
+# support for arrows ipc file parsing
+ipc = ["arrow/io_ipc", "arrow/io_ipc_compression"]
+# support for arrows streaming ipc file parsing
+ipc_streaming = ["arrow/io_ipc", "arrow/io_ipc_compression"]
+# support for arrow avro parsing
+avro = ["arrow/io_avro", "arrow/io_avro_compression"]
+csv = ["atoi_simd", "apollo-core/rows", "itoa", "zmij", "fast-float2", "simdutf8"]
+decompress = ["flate2/zlib-rs", "zstd"]
+dtype-u8 = ["apollo-core/dtype-u8"]
+dtype-u16 = ["apollo-core/dtype-u16"]
+dtype-u128 = ["apollo-core/dtype-u128"]
+dtype-i8 = ["apollo-core/dtype-i8"]
+dtype-i16 = ["apollo-core/dtype-i16"]
+dtype-i128 = ["apollo-core/dtype-i128"]
+dtype-f16 = ["apollo-core/dtype-f16"]
+dtype-categorical = ["apollo-core/dtype-categorical"]
+dtype-date = ["apollo-core/dtype-date", "apollo-time/dtype-date"]
+dtype-extension = ["apollo-core/dtype-extension"]
+object = ["apollo-core/object"]
+dtype-datetime = [
+  "apollo-core/dtype-datetime",
+  "apollo-core/temporal",
+  "apollo-time/dtype-datetime",
+  "chrono",
+]
+timezones = [
+  "chrono-tz",
+  "dtype-datetime",
+  "arrow/timezones",
+  "apollo-json?/chrono-tz",
+  "apollo-json?/timezones",
+]
+dtype-time = ["apollo-core/dtype-time", "apollo-core/temporal", "apollo-time/dtype-time"]
+dtype-duration = ["apollo-core/dtype-duration", "apollo-time/dtype-duration"]
+dtype-struct = ["apollo-core/dtype-struct"]
+dtype-decimal = ["apollo-core/dtype-decimal", "apollo-json?/dtype-decimal"]
+fmt = ["apollo-core/fmt"]
+lazy = []
+parquet = ["apollo-parquet", "apollo-parquet/compression", "apollo-core/partition_by"]
+async = [
+  "async-trait",
+  "futures",
+  "tokio",
+  "apollo-error/regex",
+  "apollo-parquet?/async",
+]
+cloud = [
+  "object_store",
+  "async",
+  "apollo-error/object_store",
+  "serde_json",
+  "serde",
+  "file_cache",
+  "reqwest",
+  "http",
+]
+file_cache = ["async", "dep:blake3", "dep:fs4", "serde_json", "cloud"]
+aws = ["object_store/aws", "cloud", "reqwest"]
+azure = ["object_store/azure", "cloud"]
+gcp = ["object_store/gcp", "cloud"]
+http = ["object_store/http", "cloud"]
+temporal = ["dtype-datetime", "dtype-date", "dtype-time"]
+simd = []
+python = ["pyo3", "apollo-error/python", "apollo-utils/python"]
+allow_unused = []
+
+[package.metadata.docs.rs]
+all-features = true
+# defines the configuration attribute `docsrs`
+rustdoc-args = ["--cfg", "docsrs"]
+
+[lints]
+workspace = true

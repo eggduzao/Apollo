@@ -1,0 +1,49 @@
+[package]
+name = "apollo-sql"
+version = { workspace = true }
+authors = { workspace = true }
+edition = { workspace = true }
+homepage = { workspace = true }
+license = { workspace = true }
+repository = { workspace = true }
+description = "SQL transpiler for Apollo. Converts SQL to Apollo logical plans"
+
+[dependencies]
+apollo-core = { workspace = true, features = ["rows"] }
+apollo-error = { workspace = true }
+apollo-lazy = { workspace = true, features = ["abs", "binary_encoding", "concat_str", "cov", "cross_join", "cum_agg", "dtype-array", "dtype-date", "dtype-decimal", "dtype-struct", "is_in", "list_eval", "log", "meta", "offset_by", "range", "regex", "round_series", "sign", "string_normalize", "string_reverse", "strings", "timezones", "trigonometry"] }
+apollo-ops = { workspace = true }
+apollo-plan = { workspace = true }
+apollo-time = { workspace = true }
+apollo-utils = { workspace = true }
+
+bitflags = { workspace = true }
+hex = { workspace = true }
+regex = { workspace = true }
+serde = { workspace = true }
+sqlparser = { workspace = true }
+
+[dev-dependencies]
+# to display dataframes in case of test failures
+apollo-core = { workspace = true, features = ["fmt"] }
+
+[features]
+default = []
+nightly = ["apollo-lazy/nightly"]
+binary_encoding = ["apollo-lazy/binary_encoding"]
+bitwise = ["apollo-lazy/bitwise"]
+csv = ["apollo-lazy/csv"]
+diagonal_concat = ["apollo-lazy/diagonal_concat"]
+dtype-decimal = ["apollo-lazy/dtype-decimal"]
+ipc = ["apollo-lazy/ipc"]
+json = ["apollo-lazy/json", "apollo-plan/json", "apollo-lazy/extract_jsonpath", "apollo-plan/extract_jsonpath"]
+list_eval = ["apollo-lazy/list_eval"]
+parquet = ["apollo-lazy/parquet"]
+rank = ["apollo-lazy/rank"]
+semi_anti_join = ["apollo-lazy/semi_anti_join"]
+serde = ["apollo-utils/serde"]
+timezones = ["apollo-lazy/timezones"]
+dynamic_group_by = ["apollo-lazy/dynamic_group_by"]
+
+[lints]
+workspace = true

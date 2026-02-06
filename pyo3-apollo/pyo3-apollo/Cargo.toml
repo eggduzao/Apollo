@@ -1,0 +1,39 @@
+[package]
+name = "pyo3-apollo"
+version = "0.25.0"
+edition = "2021"
+license = "MIT"
+readme = "../README.md"
+repository = "https://github.com/apollo/pyo3-apollo"
+description = "Expression plugins and PyO3 types for apollo"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+arrow = { workspace = true, default-features = false }
+libc = "0.2" # pyo3 depends on libc already, so this does not introduce an extra dependence.
+once_cell = "1"
+apollo = { workspace = true, default-features = false }
+apollo-core = { workspace = true, default-features = false, features = ["allow_unused"] }
+apollo-error = { workspace = true, features = ["python"] }
+apollo-ffi = { workspace = true, optional = true }
+apollo-lazy = { workspace = true, optional = true, features = ["allow_unused"] }
+apollo-plan = { workspace = true, optional = true, features = ["allow_unused"] }
+apollo-utils = { workspace = true, features = ["serde"], optional = true }
+pyo3 = { workspace = true }
+pyo3-apollo-derive = { workspace = true, optional = true }
+serde = { version = "1", optional = true }
+serde-pickle = { version = "1", optional = true }
+thiserror = "1"
+
+[features]
+# Apollo python is needed because all variants need to be activated of the DSL.
+lazy = ["apollo/serde-lazy", "apollo/lazy", "apollo-plan", "apollo-lazy/serde", "apollo-utils", "apollo-lazy/python"]
+derive = ["pyo3-apollo-derive", "apollo-plan/python", "apollo-ffi", "serde-pickle", "serde"]
+dtype-full = ["apollo/dtype-full", "dtype-decimal", "dtype-array", "dtype-struct", "dtype-categorical"]
+object = ["apollo/object"]
+dtype-decimal = ["apollo/dtype-decimal"]
+dtype-struct = ["apollo/dtype-struct"]
+dtype-array = ["apollo/dtype-array"]
+dtype-categorical = ["apollo/dtype-categorical"]
+dtype-extension = ["apollo/dtype-extension"]

@@ -1,0 +1,506 @@
+[package]
+name = "apollo"
+version = { workspace = true }
+authors = { workspace = true }
+edition = { workspace = true }
+homepage = { workspace = true }
+keywords = ["dataframe", "query-engine", "arrow"]
+license = { workspace = true }
+readme = "../../README.md"
+repository = { workspace = true }
+description = "DataFrame library based on Apache Arrow"
+
+[dependencies]
+arrow = { workspace = true }
+apollo-buffer = { workspace = true }
+apollo-compute = { workspace = true }
+apollo-core = { workspace = true, features = ["algorithm_group_by"] }
+apollo-error = { workspace = true }
+apollo-expr = { workspace = true, optional = true }
+apollo-io = { workspace = true, optional = true }
+apollo-lazy = { workspace = true, optional = true }
+apollo-ops = { workspace = true, optional = true }
+apollo-parquet = { workspace = true, optional = true }
+apollo-plan = { workspace = true, optional = true }
+apollo-sql = { workspace = true, optional = true }
+apollo-time = { workspace = true, optional = true }
+apollo-utils = { workspace = true }
+
+[dev-dependencies]
+apache-avro = { version = "0.17", features = ["snappy"] }
+arrow = { workspace = true }
+avro-schema = { workspace = true, features = ["async"] }
+chrono = { workspace = true }
+either = { workspace = true }
+ethnum = "1"
+futures = { workspace = true }
+# used to run formal property testing
+proptest = { workspace = true }
+rand = { workspace = true }
+# used to test async readers
+tokio = { workspace = true, features = ["macros", "rt", "fs", "io-util"] }
+
+[build-dependencies]
+version_check = { workspace = true }
+
+# enable js feature for getrandom to work in wasm
+[target.'cfg(target_family = "wasm")'.dependencies]
+getrandom = { version = "0.3", features = ["wasm_js"] }
+old_getrandom = { version = "0.2", features = ["js"], package = "getrandom" }
+
+[features]
+sql = ["apollo-sql"]
+rows = ["apollo-core/rows"]
+simd = ["apollo-core/simd", "apollo-compute/simd", "apollo-io/simd", "apollo-ops?/simd"]
+avx512 = ["apollo-core/avx512"]
+nightly = [
+  "apollo-core/nightly",
+  "apollo-ops?/nightly",
+  "simd",
+  "apollo-lazy?/nightly",
+  "apollo-sql?/nightly",
+  "apollo-expr/nightly",
+]
+docs = ["apollo-core/docs"]
+temporal = ["apollo-core/temporal", "apollo-lazy?/temporal", "apollo-io/temporal", "apollo-time"]
+random = ["apollo-core/random", "apollo-lazy?/random", "apollo-ops/random"]
+default = [
+  "docs",
+  "zip_with",
+  "csv",
+  "apollo-parquet",
+  "temporal",
+  "fmt",
+  "dtype-slim",
+]
+ndarray = ["apollo-core/ndarray"]
+# serde support for dataframes and series
+serde = ["apollo-buffer/serde", "apollo-core/serde", "apollo-utils/serde"]
+serde-lazy = [
+  "apollo-core/serde-lazy",
+  "apollo-lazy?/serde",
+  "apollo-time?/serde",
+  "apollo-io?/serde",
+  "apollo-ops?/serde",
+  "apollo-utils/serde",
+]
+parquet = [
+  "apollo-parquet",
+  "apollo-io",
+  "apollo-lazy?/parquet",
+  "apollo-io/parquet",
+  "apollo-sql?/parquet",
+  "new_streaming",
+]
+async = ["apollo-lazy?/async"]
+cloud = ["apollo-lazy?/cloud", "apollo-io/cloud"]
+aws = ["async", "cloud", "apollo-io/aws"]
+http = ["async", "cloud", "apollo-io/http"]
+azure = ["async", "cloud", "apollo-io/azure"]
+gcp = ["async", "cloud", "apollo-io/gcp"]
+lazy = ["apollo-core/lazy", "apollo-lazy"]
+# commented out until UB is fixed
+# parallel = ["apollo-core/parallel"]
+
+# extra utilities for StringChunked
+strings = ["apollo-core/strings", "apollo-lazy?/strings", "apollo-ops/strings"]
+
+# support for ObjectChunked<T> (downcastable Series of any type)
+object = ["apollo-core/object", "apollo-lazy?/object", "apollo-io/object", "apollo-expr/object"]
+
+# support for arrows json parsing
+json = ["apollo-io", "apollo-io/json", "apollo-lazy?/json", "apollo-sql?/json", "dtype-struct", "new_streaming"]
+
+scan_lines = ["apollo-io", "apollo-io/scan_lines", "apollo-lazy?/scan_lines", "new_streaming"]
+
+# support for arrows ipc file parsing
+ipc = ["apollo-io", "apollo-io/ipc", "apollo-lazy?/ipc", "apollo-sql?/ipc", "new_streaming"]
+
+# support for arrows streaming ipc file parsing
+ipc_streaming = ["apollo-io", "apollo-io/ipc_streaming", "apollo-lazy?/ipc"]
+
+# support for apache avro file parsing
+avro = ["apollo-io", "apollo-io/avro"]
+
+# support for arrows csv file parsing
+csv = ["apollo-io", "apollo-io/csv", "apollo-lazy?/csv", "apollo-sql?/csv", "new_streaming"]
+
+# slower builds
+performant = [
+  "apollo-core/performant",
+  "chunked_ids",
+  "dtype-u8",
+  "dtype-u16",
+  "dtype-f16",
+  "dtype-struct",
+  "cse",
+  "apollo-ops/performant",
+  "fused",
+]
+
+# Dataframe formatting.
+fmt = ["apollo-core/fmt"]
+fmt_no_tty = ["apollo-core/fmt_no_tty"]
+
+# extra operations
+abs = ["apollo-ops/abs", "apollo-lazy?/abs"]
+approx_unique = ["apollo-lazy?/approx_unique", "apollo-ops/approx_unique", "apollo-core/approx_unique"]
+arg_where = ["apollo-lazy?/arg_where"]
+array_any_all = ["apollo-lazy?/array_any_all", "dtype-array"]
+asof_join = ["apollo-lazy?/asof_join", "apollo-ops/asof_join"]
+iejoin = ["apollo-lazy?/iejoin"]
+binary_encoding = ["apollo-ops/binary_encoding", "apollo-lazy?/binary_encoding", "apollo-sql?/binary_encoding"]
+bitwise = [
+  "apollo-core/bitwise",
+  "apollo-plan?/bitwise",
+  "apollo-ops/bitwise",
+  "apollo-lazy?/bitwise",
+  "apollo-sql?/bitwise",
+]
+business = ["apollo-lazy?/business", "apollo-ops/business"]
+checked_arithmetic = ["apollo-core/checked_arithmetic"]
+chunked_ids = ["apollo-ops?/chunked_ids"]
+coalesce = ["apollo-lazy?/coalesce"]
+concat_str = ["apollo-lazy?/concat_str"]
+cov = ["apollo-lazy/cov"]
+cross_join = ["apollo-lazy?/cross_join", "apollo-ops/cross_join"]
+cse = ["apollo-lazy?/cse"]
+cum_agg = ["apollo-ops/cum_agg", "apollo-lazy?/cum_agg"]
+cumulative_eval = ["apollo-lazy?/cumulative_eval"]
+cutqcut = ["apollo-lazy?/cutqcut"]
+dataframe_arithmetic = ["apollo-core/dataframe_arithmetic"]
+month_start = ["apollo-lazy?/month_start"]
+month_end = ["apollo-lazy?/month_end"]
+offset_by = ["apollo-lazy?/offset_by"]
+decompress = ["apollo-io/decompress"]
+describe = ["apollo-core/describe"]
+diagonal_concat = ["apollo-core/diagonal_concat", "apollo-lazy?/diagonal_concat", "apollo-sql?/diagonal_concat"]
+diff = ["apollo-ops/diff", "apollo-lazy?/diff"]
+dot_diagram = ["apollo-lazy?/dot_diagram"]
+dot_product = ["apollo-core/dot_product"]
+dynamic_group_by = ["apollo-core/dynamic_group_by", "apollo-lazy?/dynamic_group_by", "apollo-sql?/dynamic_group_by"]
+ewma = ["apollo-ops/ewma", "apollo-lazy?/ewma"]
+ewma_by = ["apollo-ops/ewma_by", "apollo-lazy?/ewma_by"]
+extract_groups = ["apollo-lazy?/extract_groups"]
+extract_jsonpath = [
+  "apollo-core/strings",
+  "apollo-ops/extract_jsonpath",
+  "apollo-ops/strings",
+  "apollo-lazy?/extract_jsonpath",
+]
+find_many = ["apollo-expr/find_many", "apollo-lazy?/find_many"]
+fused = ["apollo-ops/fused", "apollo-lazy?/fused"]
+interpolate = ["apollo-ops/interpolate", "apollo-lazy?/interpolate"]
+interpolate_by = ["apollo-ops/interpolate_by", "apollo-lazy?/interpolate_by"]
+is_between = ["apollo-lazy?/is_between", "apollo-ops/is_between"]
+is_close = ["apollo-lazy?/is_close"]
+is_first_distinct = ["apollo-lazy?/is_first_distinct", "apollo-ops/is_first_distinct"]
+is_in = ["apollo-lazy?/is_in"]
+is_last_distinct = ["apollo-lazy?/is_last_distinct", "apollo-ops/is_last_distinct"]
+is_unique = ["apollo-lazy?/is_unique", "apollo-ops/is_unique"]
+regex = ["apollo-lazy?/regex"]
+list_any_all = ["apollo-lazy?/list_any_all"]
+list_count = ["apollo-ops/list_count", "apollo-lazy?/list_count"]
+array_count = ["apollo-ops/array_count", "apollo-lazy?/array_count", "dtype-array"]
+list_drop_nulls = ["apollo-lazy?/list_drop_nulls"]
+list_eval = ["apollo-lazy?/list_eval", "apollo-sql?/list_eval"]
+list_filter = ["apollo-ops/list_filter", "apollo-lazy?/list_filter"]
+list_gather = ["apollo-ops/list_gather", "apollo-lazy?/list_gather"]
+list_sample = ["apollo-lazy?/list_sample"]
+list_sets = ["apollo-lazy?/list_sets"]
+list_to_struct = ["apollo-ops/list_to_struct", "apollo-lazy?/list_to_struct"]
+list_arithmetic = ["apollo-core/list_arithmetic"]
+array_arithmetic = ["apollo-core/array_arithmetic", "dtype-array"]
+array_to_struct = ["apollo-ops/array_to_struct", "apollo-lazy?/array_to_struct"]
+log = ["apollo-ops/log", "apollo-lazy?/log"]
+merge_sorted = ["apollo-lazy?/merge_sorted"]
+meta = ["apollo-lazy?/meta"]
+mode = ["apollo-ops/mode", "apollo-lazy?/mode"]
+moment = ["apollo-ops/moment", "apollo-lazy?/moment"]
+new_streaming = ["apollo-lazy?/new_streaming", "dtype-categorical"]
+partition_by = ["apollo-core/partition_by"]
+pct_change = ["apollo-ops/pct_change", "apollo-lazy?/pct_change"]
+peaks = ["apollo-lazy/peaks"]
+pivot = ["apollo-lazy?/pivot", "apollo-ops/pivot", "dtype-struct", "rows"]
+product = ["apollo-core/product"]
+propagate_nans = ["apollo-lazy?/propagate_nans"]
+range = ["apollo-lazy?/range"]
+rank = ["apollo-lazy?/rank", "apollo-ops/rank", "apollo-sql?/rank"]
+reinterpret = ["apollo-core/reinterpret", "apollo-lazy?/reinterpret", "apollo-ops/reinterpret"]
+repeat_by = ["apollo-ops/repeat_by", "apollo-lazy?/repeat_by"]
+replace = ["apollo-ops/replace", "apollo-lazy?/replace"]
+rle = ["apollo-lazy?/rle"]
+rolling_window = ["apollo-core/rolling_window", "apollo-lazy?/rolling_window"]
+rolling_window_by = ["apollo-core/rolling_window_by", "apollo-lazy?/rolling_window_by", "apollo-time/rolling_window_by"]
+round_series = ["apollo-ops/round_series", "apollo-lazy?/round_series"]
+row_hash = ["apollo-core/row_hash", "apollo-lazy?/row_hash"]
+index_of = ["apollo-lazy?/index_of"]
+search_sorted = ["apollo-lazy?/search_sorted"]
+semi_anti_join = ["apollo-lazy?/semi_anti_join", "apollo-ops/semi_anti_join", "apollo-sql?/semi_anti_join"]
+sign = ["apollo-lazy?/sign"]
+string_encoding = ["apollo-ops/string_encoding", "apollo-lazy?/string_encoding", "apollo-core/strings"]
+string_pad = ["apollo-lazy?/string_pad", "apollo-ops/string_pad"]
+string_normalize = ["apollo-lazy?/string_normalize", "apollo-ops/string_normalize"]
+string_reverse = ["apollo-lazy?/string_reverse", "apollo-ops/string_reverse"]
+string_to_integer = ["apollo-lazy?/string_to_integer", "apollo-ops/string_to_integer"]
+take_opt_iter = ["apollo-core/take_opt_iter"]
+timezones = [
+  "apollo-core/timezones",
+  "apollo-lazy?/timezones",
+  "apollo-io/timezones",
+  "apollo-ops/timezones",
+  "apollo-sql?/timezones",
+]
+to_dummies = ["apollo-ops/to_dummies"]
+top_k = ["apollo-lazy?/top_k"]
+trigonometry = ["apollo-lazy?/trigonometry"]
+true_div = ["apollo-lazy?/true_div"]
+unique_counts = ["apollo-ops/unique_counts", "apollo-lazy?/unique_counts"]
+zip_with = ["apollo-core/zip_with"]
+
+bigidx = ["apollo-core/bigidx", "apollo-lazy?/bigidx", "apollo-ops/big_idx", "apollo-utils/bigidx"]
+apollo_cloud_client = ["apollo-lazy?/apollo_cloud_client"]
+apollo_cloud_server = ["apollo-lazy?/apollo_cloud_server", "ir_serde"]
+ir_serde = ["apollo-plan/ir_serde"]
+
+test = [
+  "lazy",
+  "rolling_window",
+  "rank",
+  "round_series",
+  "csv",
+  "dtype-categorical",
+  "cum_agg",
+  "fmt",
+  "diff",
+  "abs",
+  "parquet",
+  "ipc",
+  "ipc_streaming",
+  "json",
+]
+
+# all opt-in datatypes
+dtype-full = [
+  "dtype-date",
+  "dtype-datetime",
+  "dtype-duration",
+  "dtype-time",
+  "dtype-array",
+  "dtype-i8",
+  "dtype-i16",
+  "dtype-i128",
+  "dtype-decimal",
+  "dtype-u8",
+  "dtype-u16",
+  "dtype-u128",
+  "dtype-f16",
+  "dtype-categorical",
+  "dtype-struct",
+]
+
+# sensible minimal set of opt-in datatypes
+dtype-slim = [
+  "dtype-date",
+  "dtype-datetime",
+  "dtype-duration",
+]
+
+# opt-in datatypes for Series
+dtype-date = [
+  "apollo-core/dtype-date",
+  "apollo-io/dtype-date",
+  "apollo-lazy?/dtype-date",
+  "apollo-time?/dtype-date",
+  "apollo-ops/dtype-date",
+]
+dtype-datetime = [
+  "apollo-core/dtype-datetime",
+  "apollo-io/dtype-datetime",
+  "apollo-lazy?/dtype-datetime",
+  "apollo-time?/dtype-datetime",
+  "apollo-ops/dtype-datetime",
+]
+dtype-duration = [
+  "apollo-core/dtype-duration",
+  "apollo-io/dtype-duration",
+  "apollo-lazy?/dtype-duration",
+  "apollo-time?/dtype-duration",
+  "apollo-ops/dtype-duration",
+]
+dtype-time = [
+  "apollo-core/dtype-time",
+  "apollo-io/dtype-time",
+  "apollo-lazy?/dtype-time",
+  "apollo-time?/dtype-time",
+  "apollo-ops/dtype-time",
+]
+dtype-array = [
+  "apollo-core/dtype-array",
+  "apollo-lazy?/dtype-array",
+  "apollo-ops/dtype-array",
+  "apollo-plan?/dtype-array",
+]
+dtype-i8 = [
+  "apollo-core/dtype-i8",
+  "apollo-io/dtype-i8",
+  "apollo-lazy?/dtype-i8",
+  "apollo-ops/dtype-i8",
+  "apollo-time?/dtype-i8",
+]
+dtype-i16 = [
+  "apollo-core/dtype-i16",
+  "apollo-io/dtype-i16",
+  "apollo-lazy?/dtype-i16",
+  "apollo-ops/dtype-i16",
+  "apollo-time?/dtype-i16",
+]
+dtype-i128 = [
+  "apollo-core/dtype-i128",
+  "apollo-io/dtype-i128",
+  "apollo-lazy?/dtype-i128",
+  "apollo-ops/dtype-i128",
+  "apollo-time?/dtype-i128",
+]
+dtype-decimal = [
+  "apollo-core/dtype-decimal",
+  "apollo-io/dtype-decimal",
+  "apollo-lazy?/dtype-decimal",
+  "apollo-sql?/dtype-decimal",
+  "apollo-ops/dtype-decimal",
+]
+dtype-u8 = [
+  "apollo-core/dtype-u8",
+  "apollo-io/dtype-u8",
+  "apollo-lazy?/dtype-u8",
+  "apollo-ops/dtype-u8",
+  "apollo-time?/dtype-u8",
+]
+dtype-u16 = [
+  "apollo-core/dtype-u16",
+  "apollo-io/dtype-u16",
+  "apollo-lazy?/dtype-u16",
+  "apollo-ops/dtype-u16",
+  "apollo-time?/dtype-u16",
+]
+dtype-u128 = [
+  "apollo-core/dtype-u128",
+  "apollo-io/dtype-u128",
+  "apollo-lazy?/dtype-u128",
+  "apollo-ops/dtype-u128",
+  "apollo-time?/dtype-u128",
+]
+dtype-f16 = [
+  "apollo-core/dtype-f16",
+  "apollo-io/dtype-f16",
+  "apollo-lazy?/dtype-f16",
+  "apollo-ops/dtype-f16",
+  "apollo-time?/dtype-f16",
+]
+dtype-categorical = [
+  "apollo-core/dtype-categorical",
+  "apollo-io/dtype-categorical",
+  "apollo-lazy?/dtype-categorical",
+  "apollo-ops/dtype-categorical",
+]
+dtype-struct = [
+  "apollo-core/dtype-struct",
+  "apollo-io/dtype-struct",
+  "apollo-lazy?/dtype-struct",
+  "apollo-ops/dtype-struct",
+]
+dtype-extension = [
+  "apollo-core/dtype-extension",
+  "apollo-expr/dtype-extension",
+  "apollo-lazy?/dtype-extension",
+  "apollo-ops/dtype-extension",
+  "apollo-plan/dtype-extension",
+]
+hist = ["apollo-ops/hist", "apollo-lazy/hist"]
+
+docs-selection = [
+  "csv",
+  "json",
+  "parquet",
+  "ipc",
+  "ipc_streaming",
+  "array_arithmetic",
+  "binary_encoding",
+  "moment",
+  "bitwise",
+  "dtype-full",
+  "is_in",
+  "rows",
+  "docs",
+  "strings",
+  "object",
+  "lazy",
+  "temporal",
+  "random",
+  "zip_with",
+  "round_series",
+  "checked_arithmetic",
+  "ndarray",
+  "repeat_by",
+  "is_between",
+  "is_close",
+  "is_first_distinct",
+  "is_last_distinct",
+  "asof_join",
+  "cross_join",
+  "semi_anti_join",
+  "iejoin",
+  "concat_str",
+  "string_reverse",
+  "string_to_integer",
+  "decompress",
+  "mode",
+  "take_opt_iter",
+  "cum_agg",
+  "rolling_window",
+  "rolling_window_by",
+  "interpolate",
+  "interpolate_by",
+  "diff",
+  "rank",
+  "range",
+  "diagonal_concat",
+  "abs",
+  "dot_diagram",
+  "string_encoding",
+  "product",
+  "to_dummies",
+  "describe",
+  "list_eval",
+  "cumulative_eval",
+  "timezones",
+  "arg_where",
+  "propagate_nans",
+  "coalesce",
+  "dynamic_group_by",
+  "extract_groups",
+  "replace",
+  "approx_unique",
+  "unique_counts",
+  "apollo_cloud_client",
+  "serde",
+  "cloud",
+  "async",
+]
+
+bench = [
+  "lazy",
+]
+
+# All features except python
+full = ["docs-selection", "performant", "fmt"]
+allow_unused = ["apollo-lazy?/allow_unused", "apollo-core/allow_unused", "apollo-time?/allow_unused"]
+
+[package.metadata.docs.rs]
+# all-features = true
+features = ["docs-selection"]
+# defines the configuration attribute `docsrs`
+rustdoc-args = ["--cfg", "docsrs"]
+
+[lints]
+workspace = true

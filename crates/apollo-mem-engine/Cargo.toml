@@ -1,0 +1,67 @@
+[package]
+name = "apollo-mem-engine"
+version.workspace = true
+authors.workspace = true
+edition.workspace = true
+homepage.workspace = true
+license.workspace = true
+repository.workspace = true
+description = "In memory engine of the Apollo project."
+
+[dependencies]
+arrow = { workspace = true }
+futures = { workspace = true, optional = true }
+memmap = { workspace = true }
+apollo-core = { workspace = true, features = ["lazy"] }
+apollo-error = { workspace = true }
+apollo-expr = { workspace = true }
+apollo-io = { workspace = true, features = ["lazy"] }
+apollo-json = { workspace = true, optional = true }
+apollo-ops = { workspace = true, features = ["chunked_ids"] }
+apollo-plan = { workspace = true }
+apollo-time = { workspace = true, optional = true }
+apollo-utils = { workspace = true }
+pyo3 = { workspace = true, optional = true }
+rayon = { workspace = true }
+recursive = { workspace = true }
+tokio = { workspace = true, optional = true }
+
+[features]
+async = [
+  "apollo-io/cloud",
+  "tokio",
+]
+python = ["pyo3", "apollo-plan/python", "apollo-core/python", "apollo-io/python", "apollo-error/python"]
+ipc = ["apollo-io/ipc", "apollo-plan/ipc"]
+json = ["apollo-io/json", "apollo-plan/json", "apollo-json"]
+scan_lines = ["apollo-plan/scan_lines", "apollo-io/scan_lines"]
+csv = ["apollo-io/csv", "apollo-plan/csv"]
+cloud = ["apollo-plan/cloud"]
+parquet = ["apollo-io/parquet", "apollo-plan/parquet"]
+dtype-categorical = ["apollo-plan/dtype-categorical"]
+dtype-date = ["apollo-plan/dtype-date", "apollo-time/dtype-date"]
+dtype-datetime = ["apollo-plan/dtype-datetime", "apollo-time/dtype-datetime"]
+dtype-decimal = ["apollo-plan/dtype-decimal"]
+dtype-duration = ["apollo-plan/dtype-duration", "apollo-time/dtype-duration"]
+dtype-i16 = ["apollo-plan/dtype-i16"]
+dtype-i8 = ["apollo-plan/dtype-i8"]
+dtype-struct = ["apollo-plan/dtype-struct", "apollo-ops/dtype-struct"]
+dtype-time = ["apollo-plan/dtype-time", "apollo-time/dtype-time"]
+dtype-u16 = ["apollo-plan/dtype-u16"]
+dtype-u8 = ["apollo-plan/dtype-u8"]
+dtype-f16 = ["apollo-plan/dtype-f16"]
+object = ["apollo-core/object"]
+dynamic_group_by = ["apollo-plan/dynamic_group_by", "apollo-time", "apollo-expr/dynamic_group_by"]
+asof_join = ["apollo-plan/asof_join", "apollo-time", "apollo-ops/asof_join"]
+merge_sorted = ["apollo-plan/merge_sorted", "apollo-ops/merge_sorted"]
+allow_unused = [
+  "apollo-core/allow_unused",
+  "apollo-ops/allow_unused",
+  "apollo-io/allow_unused",
+  "apollo-time/allow_unused",
+  "apollo-plan/allow_unused",
+  "apollo-expr/allow_unused",
+]
+
+[lints]
+workspace = true

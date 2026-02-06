@@ -1,0 +1,331 @@
+[package]
+name = "apollo-plan"
+version = { workspace = true }
+authors = { workspace = true }
+edition = { workspace = true }
+homepage = { workspace = true }
+license = { workspace = true }
+repository = { workspace = true }
+description = "Lazy query engine for the Apollo DataFrame library"
+
+[lib]
+doctest = false
+
+[dependencies]
+libloading = { workspace = true, optional = true }
+apollo-buffer = { workspace = true }
+apollo-compute = { workspace = true }
+apollo-core = { workspace = true, features = ["lazy", "zip_with", "random"] }
+apollo-error = { workspace = true }
+apollo-ffi = { workspace = true, optional = true }
+apollo-io = { workspace = true, features = ["lazy", "csv", "async"] }
+apollo-json = { workspace = true, optional = true }
+apollo-ops = { workspace = true, features = [] }
+apollo-parquet = { workspace = true, optional = true }
+apollo-time = { workspace = true, optional = true }
+apollo-utils = { workspace = true }
+
+arrow = { workspace = true }
+bitflags = { workspace = true }
+blake3 = { workspace = true, optional = true }
+bytemuck = { workspace = true }
+bytes = { workspace = true, features = ["serde"] }
+chrono = { workspace = true, optional = true }
+chrono-tz = { workspace = true, optional = true }
+either = { workspace = true }
+futures = { workspace = true }
+hashbrown = { workspace = true }
+memmap = { workspace = true }
+num-traits = { workspace = true }
+percent-encoding = { workspace = true }
+pyo3 = { workspace = true, optional = true }
+rayon = { workspace = true }
+recursive = { workspace = true }
+regex = { workspace = true, optional = true }
+schemars = { workspace = true, features = ["either1"], optional = true }
+serde = { workspace = true, features = ["rc"], optional = true }
+serde_json = { workspace = true, optional = true }
+sha2 = { workspace = true, optional = true }
+slotmap = { workspace = true }
+strum_macros = { workspace = true }
+tokio = { workspace = true }
+
+[build-dependencies]
+sha2 = { workspace = true }
+version_check = { workspace = true }
+
+[features]
+# debugging utility
+debugging = []
+python = ["dep:pyo3", "apollo-utils/python", "apollo-ffi", "apollo-core/object", "serde"]
+serde = [
+  "dep:serde",
+  "apollo-buffer/serde",
+  "apollo-core/serde-lazy",
+  "apollo-core/serde",
+  "apollo-time/serde",
+  "apollo-io/serde",
+  "apollo-ops/serde",
+  "apollo-utils/serde",
+  "apollo-compute/serde",
+  "either/serde",
+  "slotmap/serde",
+]
+parquet = ["apollo-io/parquet", "apollo-parquet"]
+cloud = ["apollo-io/cloud"]
+ipc = ["apollo-io/ipc"]
+json = ["apollo-io/json", "apollo-json"]
+scan_lines = []
+csv = ["apollo-io/csv"]
+temporal = [
+  "chrono",
+  "apollo-core/temporal",
+  "apollo-core/dtype-date",
+  "apollo-core/dtype-datetime",
+  "apollo-core/dtype-time",
+  "apollo-core/dtype-i8",
+  "apollo-core/dtype-i16",
+]
+# debugging purposes
+fmt = ["apollo-core/fmt"]
+strings = ["apollo-core/strings", "apollo-ops/strings"]
+future = []
+dtype-u8 = ["apollo-core/dtype-u8"]
+dtype-u16 = ["apollo-core/dtype-u16"]
+dtype-u128 = ["apollo-core/dtype-u128", "apollo-ops/dtype-u128"]
+dtype-i8 = ["apollo-core/dtype-i8"]
+dtype-i128 = ["apollo-core/dtype-i128"]
+dtype-i16 = ["apollo-core/dtype-i16"]
+dtype-f16 = ["apollo-core/dtype-f16"]
+dtype-decimal = ["apollo-core/dtype-decimal", "apollo-ops/dtype-decimal", "dtype-i128"]
+dtype-date = ["apollo-time/dtype-date", "temporal"]
+dtype-datetime = ["apollo-time/dtype-datetime", "temporal"]
+dtype-duration = ["apollo-core/dtype-duration", "apollo-time/dtype-duration", "temporal", "apollo-ops/dtype-duration"]
+dtype-time = ["apollo-time/dtype-time", "temporal"]
+dtype-array = ["apollo-core/dtype-array", "apollo-ops/dtype-array"]
+dtype-categorical = ["apollo-core/dtype-categorical"]
+dtype-extension = ["apollo-core/dtype-extension", "apollo-ops/dtype-extension"]
+dtype-struct = ["apollo-core/dtype-struct"]
+object = ["apollo-core/object", "apollo-ops/object"]
+list_filter = ["apollo-ops/list_filter"]
+list_gather = ["apollo-ops/list_gather"]
+list_count = ["apollo-ops/list_count"]
+array_count = ["apollo-ops/array_count", "dtype-array"]
+trigonometry = []
+sign = []
+timezones = ["chrono-tz", "apollo-time/timezones", "apollo-core/timezones", "regex"]
+binary_encoding = ["apollo-ops/binary_encoding"]
+string_encoding = ["apollo-ops/string_encoding"]
+true_div = []
+nightly = ["apollo-utils/nightly", "apollo-ops/nightly"]
+extract_jsonpath = ["apollo-ops/extract_jsonpath"]
+dsl-schema = [
+  "dep:schemars",
+  "dep:sha2",
+  "dep:serde_json",
+  "serde_json/preserve_order",
+  "serde",
+  "arrow/dsl-schema",
+  "apollo-core/dsl-schema",
+  "apollo-time/dsl-schema",
+  "apollo-io/dsl-schema",
+  "apollo-ops/dsl-schema",
+  "apollo-utils/dsl-schema",
+  "apollo-compute/dsl-schema",
+]
+
+# operations
+bitwise = ["apollo-core/bitwise", "apollo-ops/bitwise"]
+approx_unique = ["apollo-ops/approx_unique", "apollo-core/approx_unique"]
+is_in = ["apollo-ops/is_in"]
+repeat_by = ["apollo-ops/repeat_by"]
+round_series = ["apollo-ops/round_series"]
+is_first_distinct = ["apollo-core/is_first_distinct", "apollo-ops/is_first_distinct"]
+is_last_distinct = ["apollo-core/is_last_distinct", "apollo-ops/is_last_distinct"]
+is_unique = ["apollo-ops/is_unique"]
+is_between = ["apollo-ops/is_between"]
+is_close = ["apollo-ops/is_close"]
+cross_join = ["apollo-ops/cross_join"]
+asof_join = ["apollo-time", "apollo-ops/asof_join"]
+iejoin = ["apollo-ops/iejoin"]
+concat_str = []
+business = ["apollo-ops/business"]
+range = ["dtype-array"]
+mode = ["apollo-ops/mode"]
+cum_agg = ["apollo-ops/cum_agg"]
+interpolate = ["apollo-ops/interpolate"]
+interpolate_by = ["apollo-ops/interpolate_by"]
+rolling_window = [
+  "apollo-core/rolling_window",
+  "apollo-time/rolling_window",
+  "apollo-ops/rolling_window",
+]
+rolling_window_by = [
+  "apollo-core/rolling_window_by",
+  "apollo-time/rolling_window_by",
+  "apollo-ops/rolling_window_by",
+]
+rank = ["apollo-ops/rank"]
+diff = ["apollo-ops/diff"]
+pct_change = ["apollo-ops/pct_change"]
+moment = ["apollo-ops/moment"]
+abs = ["apollo-ops/abs"]
+random = ["apollo-core/random"]
+dynamic_group_by = ["apollo-core/dynamic_group_by", "dtype-date", "dtype-datetime"]
+ewma = ["apollo-ops/ewma"]
+ewma_by = ["apollo-ops/ewma_by"]
+dot_diagram = []
+unique_counts = ["apollo-ops/unique_counts"]
+log = ["apollo-ops/log"]
+chunked_ids = []
+list_to_struct = ["apollo-ops/list_to_struct"]
+array_to_struct = ["apollo-ops/array_to_struct"]
+row_hash = ["apollo-core/row_hash", "apollo-ops/hash"]
+reinterpret = ["apollo-core/reinterpret", "apollo-ops/reinterpret"]
+string_pad = ["apollo-ops/string_pad"]
+string_normalize = ["apollo-ops/string_normalize"]
+string_reverse = ["apollo-ops/string_reverse"]
+string_to_integer = ["apollo-ops/string_to_integer"]
+arg_where = []
+index_of = ["apollo-ops/index_of"]
+search_sorted = ["apollo-ops/search_sorted"]
+merge_sorted = ["apollo-ops/merge_sorted"]
+meta = []
+pivot = ["apollo-core/rows", "apollo-ops/pivot"]
+top_k = ["apollo-ops/top_k"]
+semi_anti_join = ["apollo-ops/semi_anti_join"]
+cse = ["blake3"]
+propagate_nans = ["apollo-ops/propagate_nans"]
+coalesce = []
+fused = ["apollo-ops/fused"]
+array_any_all = ["apollo-ops/array_any_all", "dtype-array"]
+list_sets = ["apollo-ops/list_sets"]
+list_any_all = ["apollo-ops/list_any_all"]
+list_drop_nulls = ["apollo-ops/list_drop_nulls"]
+list_sample = ["apollo-ops/list_sample"]
+cutqcut = ["apollo-ops/cutqcut"]
+rle = ["apollo-ops/rle"]
+extract_groups = ["regex", "dtype-struct", "apollo-ops/extract_groups"]
+ffi_plugin = ["libloading", "apollo-ffi"]
+hive_partitions = []
+peaks = ["apollo-ops/peaks"]
+cov = ["apollo-ops/cov"]
+hist = ["apollo-ops/hist"]
+replace = ["apollo-ops/replace"]
+find_many = ["apollo-ops/find_many"]
+month_start = ["apollo-time/month_start"]
+month_end = ["apollo-time/month_end"]
+offset_by = ["apollo-time/offset_by"]
+allow_unused = ["apollo-io/allow_unused", "apollo-ops/allow_unused", "apollo-time?/allow_unused"]
+
+bigidx = ["apollo-core/bigidx", "apollo-utils/bigidx"]
+apollo_cloud_client = ["serde"]
+apollo_cloud_server = ["serde"]
+ir_serde = ["serde", "apollo-utils/ir_serde"]
+
+[package.metadata.docs.rs]
+features = [
+  "bitwise",
+  "temporal",
+  "serde",
+  "rolling_window",
+  "rolling_window_by",
+  "timezones",
+  "dtype-date",
+  "extract_groups",
+  "dtype-datetime",
+  "asof_join",
+  "dtype-duration",
+  "is_first_distinct",
+  "pivot",
+  "dtype-array",
+  "is_last_distinct",
+  "dtype-time",
+  "array_any_all",
+  "month_start",
+  "month_end",
+  "offset_by",
+  "parquet",
+  "strings",
+  "row_hash",
+  "json",
+  "python",
+  "cloud",
+  "string_to_integer",
+  "list_any_all",
+  "pct_change",
+  "list_gather",
+  "list_filter",
+  "dtype-i16",
+  "round_series",
+  "cutqcut",
+  "async",
+  "ewma",
+  "ewma_by",
+  "random",
+  "chunked_ids",
+  "repeat_by",
+  "is_in",
+  "log",
+  "string_reverse",
+  "list_sets",
+  "propagate_nans",
+  "mode",
+  "rank",
+  "hist",
+  "object",
+  "approx_unique",
+  "dtype-categorical",
+  "merge_sorted",
+  "bigidx",
+  "cov",
+  "list_sample",
+  "dtype-i8",
+  "fused",
+  "binary_encoding",
+  "list_drop_nulls",
+  "fmt",
+  "list_to_struct",
+  "string_pad",
+  "diff",
+  "rle",
+  "is_unique",
+  "find_many",
+  "string_encoding",
+  "ipc",
+  "index_of",
+  "search_sorted",
+  "unique_counts",
+  "dtype-u8",
+  "dtype-struct",
+  "peaks",
+  "abs",
+  "interpolate",
+  "interpolate_by",
+  "list_count",
+  "cum_agg",
+  "top_k",
+  "moment",
+  "semi_anti_join",
+  "replace",
+  "dtype-u16",
+  "dtype-f16",
+  "regex",
+  "dtype-decimal",
+  "arg_where",
+  "business",
+  "range",
+  "meta",
+  "hive_partitions",
+  "concat_str",
+  "coalesce",
+  "dot_diagram",
+  "trigonometry",
+  "true_div",
+  "sign",
+]
+# defines the configuration attribute `docsrs`
+rustdoc-args = ["--cfg", "docsrs"]
+
+[lints]
+workspace = true
